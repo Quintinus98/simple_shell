@@ -6,28 +6,32 @@
  * @argv: list of arguments.
  * Return: Always 0
 */
-int main(int argc, char **argv)
+int main(__attribute__((unused)) int argc, char **argv)
 {
-	int mode = isatty(STDIN_FILENO);
-	int cnt = 0;
-	char *line = NULL, **grid;
-	char *ch = "$ ", *cmd = NULL;
+	int mode = isatty(STDIN_FILENO), cnt = 0;
+	char *line = NULL, **grid, *cmd = NULL;
+	int (*builtin)(char **argv, char *line);
 
 	errno = 0;
-	(void)argc;
 	while (1)
 	{
 		cnt++;
-		if (mode == 1)
-			write(1, ch, 2);
-
-		line = prompt();
+		prompt(mode, &line);
 		grid = string_to_array(line);
-		if (grid == NULL)
+		if (grid[0] == NULL)
+		{
+			free(grid);
 			continue;
-
+		}
+		/** If cmd is not found e.g ls */
 		if (access(grid[0], X_OK) == -1)
 		{
+			builtin = builtins(grid[0]);
+			if (builtin)
+			{
+				builtin(grid, line);
+				continue;
+			}
 			cmd = get_path_loc("PATH", grid[0]);
 			if (cmd == NULL)
 			{
@@ -39,6 +43,7 @@ int main(int argc, char **argv)
 			exec_cmd(grid, argv, cmd);
 			continue;
 		}
+		/** If cmd is found {e.g /bin/ls} execute. */
 		execute(grid, argv);
 	}
 	return (errno);

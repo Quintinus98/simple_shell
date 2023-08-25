@@ -15,17 +15,20 @@ int exec_cmd(char **arr, char **argv, char *cmd)
 	child_pid = fork();
 	if (child_pid < 0)
 	{
+		/** Something went wrong. */
 		perror(cmd);
 		exit(-1);
 	}
 	else if (child_pid == 0)
 	{
+		/** Child execute first. */
 		execve(cmd, arr, environ);
 		perror(argv[0]);
 		exit(2);
 	}
 	else
 	{
+		/** Parent wait for child to execute. */
 		wait(&status);
 		if (WIFEXITED(status))
 			status = WEXITSTATUS(status);

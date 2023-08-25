@@ -2,22 +2,24 @@
 
 /**
  * prompt - Displays "$ {User input}";
+ * @mode: Determines if the $ sign will be printed.
+ * @line: Address of line in main.
  * Return: Returns the entered user input.
 */
-char *prompt(void)
+
+void prompt(int mode, char **line)
 {
-	char *line = NULL;
 	size_t linecap = 0;
 	ssize_t linelen;
 
-	linelen = getline(&line, &linecap, stdin);
+	if (mode == 1)
+		write(1, "$ ", 2);
+	linelen = getline(line, &linecap, stdin);
 	if (linelen == -1)
+	{
+		free(line);
 		exit(errno);
-
-	line[linelen - 1] = '\0';
-	if (_strcmp(line, "\n") == 0)
-		line = NULL;
-	return (line);
+	}
 }
 
 /**
@@ -27,41 +29,25 @@ char *prompt(void)
 */
 char **string_to_array(char *s)
 {
-	int cnt = 0, i = 0;
-	char **arr, *token, *tok, *scpy;
+	int i = 0;
+	char **arr, *token;
 	const char *sep = " \n";
 
-	/** Get Word Count */
-	scpy = malloc(_strlen(s) * sizeof(char));
-	if (!scpy || !s)
-		return (NULL);
-	_strcpy(scpy, s);
-	tok = strtok(s, sep);
-	for (; tok != NULL; tok = strtok(NULL, sep))
-		cnt++;
-	free(s);
-
 	/** Create Dynamic array */
-	arr = malloc((cnt + 1) * sizeof(char *));
+	arr = malloc(30 * sizeof(char *));
 	if (arr == NULL)
 		return (NULL);
 
 	/** Get Token and use for loop to extract the rest. */
-	token = strtok(scpy, sep);
-	for (i = 0; token != NULL; i++)
+	token = strtok(s, sep);
+	while (token != NULL)
 	{
-		arr[i] = malloc(_strlen(token) * sizeof(char));
-		if (arr[i] == NULL)
-		{
-			free_grid(arr);
-			return (NULL);
-		}
-		arr[i] = _strdup(token);
-		token = strtok(NULL, " ");
+		arr[i] = token;
+		token = strtok(NULL, sep);
+		i++;
 	}
 	arr[i] = NULL;
 
-	free(scpy);
 	return (arr);
 }
 
@@ -137,7 +123,10 @@ char *get_path_loc(char *path, char *cmd)
 		_strcat(command, cmd);
 
 		if (stat(command, &st) == 0)
+		{
+			free(paths);
 			return (command);
+		}
 		free(command);
 	}
 	free(paths);

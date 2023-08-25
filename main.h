@@ -10,8 +10,16 @@
 #include <sys/stat.h>
 #include <errno.h>
 
+/** Other important declarations*/
+extern char **environ;
+typedef struct builtin
+{
+	char *builtin;
+	int (*f)(char **arg, char *line);
+} builtin_t;
+
 /** func1.c */
-char *prompt(void);
+void prompt(int mode, char **line);
 char **string_to_array(char *s);
 char *get_path_loc(char *path, char *name);
 char *_getenv(char *name);
@@ -39,8 +47,10 @@ void _puts(char *str);
 int _putchar(char c);
 char *_memcpy(char *dest, char *src, unsigned int n);
 
-/** Other important declarations*/
-extern char **environ;
+/** builtins.c */
+int (*builtins(char *s))(char **argv, char *line);
+int _exitshell(char **argv, char *line);
+int _printenv(char **argv, char *line);
 
 #endif
 
