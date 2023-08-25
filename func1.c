@@ -17,7 +17,6 @@ void prompt(int mode, char **line)
 	linelen = getline(line, &linecap, stdin);
 	if (linelen == -1)
 	{
-		free(line);
 		exit(errno);
 	}
 }

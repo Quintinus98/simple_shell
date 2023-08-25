@@ -13,7 +13,7 @@ int main(__attribute__((unused)) int argc, char **argv)
 	int (*builtin)(char **argv, char *line);
 
 	errno = 0;
-	while (1)
+	while (1 == 1)
 	{
 		cnt++;
 		prompt(mode, &line);
