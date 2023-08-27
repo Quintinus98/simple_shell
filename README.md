@@ -6,7 +6,7 @@ The project was designed and developed in **C**.
 
 To compile the project
 ```sh
-	gcc -Wall -Werror -Wextra -pedantic -std=gnu89 *.c -o hsh
+	./compile.bash
 ```
 To run the program
 ```sh
