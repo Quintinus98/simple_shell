@@ -19,15 +19,19 @@ typedef struct builtin
 	int (*f)(char **arg, char *line);
 } builtin_t;
 
-/** func1.c */
+/** essentials.c */
 void prompt(int mode, char **line);
 char **string_to_array(char *s);
 char *get_path_loc(char *path, char *name);
-char *_getenv(char *name);
 
-/** func2.c */
+/** execute.c */
 int exec_cmd(char **arr, char **argv, char *cmd);
 void execute(char **arr, char **argv);
+
+/** environ.c */
+char *_getenv(char *name);
+int _unsetenv(char *name);
+int _setenv(char *name, char *value, int overwrite);
 
 /** aux_funcs1.c */
 void zerror(char *prog, int count, char *cmd);
@@ -54,4 +58,3 @@ int _exitshell(char **argv, char *line);
 int _printenv(char **argv, char *line);
 
 #endif
-

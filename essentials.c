@@ -51,51 +51,6 @@ char **string_to_array(char *s)
 }
 
 /**
- * _getenv - gets an environment variable
- * @name: Name of env var to get.
- * Return: Environment variable.
-*/
-
-char *_getenv(char *name)
-{
-	int k = 0, len = 0, envl = 0;
-	char *str = NULL, *sp;
-	char **env = environ;
-
-	if (!name || name[0] == '\0')
-		return (NULL);
-
-	len = _strlen(name);
-	/** Get env matching name and = sign.*/
-	while (*env != NULL)
-	{
-		if (_strncmp(*env, name, len) == 0 && (*env)[len] == '=')
-			break;
-		env++;
-	}
-
-	if (*env == NULL)
-		return (NULL);
-
-	sp = _strdup(*env);
-	if (!sp)
-		return (NULL);
-
-	len++;
-	envl = _strlen(sp);
-	str = malloc((envl - len) * sizeof(char));
-	if (!str)
-		return (NULL);
-	for (; sp[len + k] != '\0'; k++)
-		str[k] = sp[len + k];
-	str[k] = '\0';
-
-	free(sp);
-	/** Always remember to free str. */
-	return (str);
-}
-
-/**
  * get_path_loc - Gets path location.
  * @path: Name of path.
  * @cmd: command to find.
