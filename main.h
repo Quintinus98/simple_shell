@@ -57,4 +57,6 @@ int (*builtins(char *s))(char **argv, char *line);
 int _exitshell(char **argv, char *line);
 int _printenv(char **argv, char *line);
 
+/** getline.c */
+
 #endif
