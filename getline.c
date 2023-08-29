@@ -10,9 +10,9 @@
 
 int _getline(char **linep, size_t *linecapp, FILE *stream)
 {
-	char ch, *str;
-	size_t i = 0, new_size;
-	ssize_t val ;
+	char ch = '0', *str;
+	ssize_t fd, st;
+	static size_t val ;
 
 	if (linep == NULL || linecapp == NULL)
 	{
@@ -20,24 +20,28 @@ int _getline(char **linep, size_t *linecapp, FILE *stream)
 		return (-1);
 	}
 
-	val = 0;
-	(void)stream;
-	// if (val == 0)
-	// 	fflush(stream);
-	// else
-	// 	return (-1);
+	if (val == 0)
+		fflush(stream);
+	else
+		return (-1);
 
 	str = malloc((*linecapp = *linecapp + 1) * sizeof(char));
 	if (!str)
 		return (-1);
 
-	while (read(STDIN_FILENO, &ch, 1) != -1 && ch != '\n')
+	while (ch != '\n')
 	{
-		str[val] = ch;
-		if (i == (*linecapp - 1))
+		fd = read(STDIN_FILENO, &ch, 1);
+		if (fd == -1 || (fd == 0 && val == 0))
 		{
-			new_size = (*linecapp + 2);
-			str = _realloc(str, *linecapp, new_size);
+			free(str);
+			return (-1);
+		}
+		
+		str[val] = ch;
+		if (val == (*linecapp - 1))
+		{
+			str = _realloc(str, *linecapp, *linecapp + 2);
 			*linecapp += 2;
 		}
 		val++;
@@ -46,5 +50,9 @@ int _getline(char **linep, size_t *linecapp, FILE *stream)
 	str[val++] = '\0';
 	*linep = str;
 
-	return (val);
+	st = val;
+	if (st != 0)
+		val = 0;
+
+	return (st);
 }
