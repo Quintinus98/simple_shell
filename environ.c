@@ -1,6 +1,29 @@
 #include "main.h"
 
 /**
+ * _copyenviron - Copies environ
+ * Return: A copy of environ.
+*/
+char **_copyenviron(void)
+{
+	char **env;
+	int len = 0, i = 0;
+
+	while (environ[len])
+		len++;
+
+	env = malloc((len + 1) * sizeof(char *));
+	if (!env)
+		return (NULL);
+
+	for (i = 0; environ[i]; i++)
+		env[i] = environ[i];
+	env[i] = NULL;
+
+	return (env);
+}
+
+/**
  * _getenv - gets an environment variable
  * @name: Name of env var to get.
  * Return: Environment variable.
@@ -85,6 +108,7 @@ int _unsetenv(char *name)
 int _setenv(char *name, char *value, int overwrite)
 {
 	char *env, *envName;
+	int err;
 
 	/** Check if name, value = null, string name does not contain = */
 	if (!name || _strchr(name, '=') != NULL || !value)
@@ -99,9 +123,10 @@ int _setenv(char *name, char *value, int overwrite)
 		free(envName);
 		return (0);
 	}
-
 	/** Remove name */
-	_unsetenv(name);
+	err = _unsetenv(name);
+	if (err == -1)
+		return err;
 
 	env = malloc(_strlen(name) + _strlen(value) + 2);
 	if (!env)
@@ -111,8 +136,33 @@ int _setenv(char *name, char *value, int overwrite)
 	_strcat(env, "=");
 	_strcat(env, value);
 
-	/** putenv(env); */
+	err = _putenv(env);
+	if (err == -1)
+		return err;
 	return (0);
 }
 
-/** Create a function copy environment. */
+/** _putenv - Puts an env variable into environ
+ * @env: environment variable
+ * Return: 0 if successful or -1 if it fails.
+*/
+int _putenv(char *env)
+{
+	int len = 0, i = 0;
+	char **new_env;
+
+	while (environ[len])
+		len++;
+
+	new_env = _realloc(environ, len, (len + 2));
+	if (!new_env)
+		return (-1);
+	for (i = 0; environ[i]; i++)
+		new_env[i] = environ[i];
+	free(environ);
+	environ = new_env;
+	environ[i] = env;
+	environ[i + 1] = NULL;
+
+	return (0);
+}

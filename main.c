@@ -23,6 +23,7 @@ int main(__attribute__((unused)) int argc, char **argv)
 			free(grid);
 			continue;
 		}
+		environ = _copyenviron();
 		/** If cmd is not found e.g ls */
 		if (access(grid[0], X_OK) == -1)
 		{
@@ -37,6 +38,7 @@ int main(__attribute__((unused)) int argc, char **argv)
 			{
 				zerror(argv[0], cnt, grid[0]);
 				free(grid);
+				free(environ);
 				errno = 127;
 				continue;
 			}

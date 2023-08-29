@@ -55,5 +55,6 @@ int _printenv(char **argv, char *line)
 		_puts(environ[i]);
 		_putchar('\n');
 	}
+	free(environ);
 	return (0);
 }

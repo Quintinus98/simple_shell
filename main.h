@@ -29,9 +29,11 @@ int exec_cmd(char **arr, char **argv, char *cmd);
 void execute(char **arr, char **argv);
 
 /** environ.c */
+char **_copyenviron(void);
 char *_getenv(char *name);
 int _unsetenv(char *name);
 int _setenv(char *name, char *value, int overwrite);
+int _putenv(char *env);
 
 /** aux_funcs1.c */
 void zerror(char *prog, int count, char *cmd);
@@ -51,6 +53,7 @@ char *_strncat(char *dest, char *src, size_t n);
 void _puts(char *str);
 int _putchar(char c);
 char *_memcpy(char *dest, char *src, unsigned int n);
+void *_realloc(void *ptr, unsigned int old_size, unsigned int new_size);
 
 /** builtins.c */
 int (*builtins(char *s))(char **argv, char *line);
@@ -58,5 +61,6 @@ int _exitshell(char **argv, char *line);
 int _printenv(char **argv, char *line);
 
 /** getline.c */
+int _getline(char **linep, size_t *linecapp, FILE *stream);
 
 #endif
