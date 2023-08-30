@@ -9,7 +9,7 @@
 void zerror(char *prog, int count, char *cmd)
 {
 	char *cmdc = _itoa(count);
-	size_t len = _strlen(prog) + _strlen(cmd) + ilen(count) + 17;
+	size_t len = _strlen(prog) + _strlen(cmd) + ilen(count) + 16;
 	char *err_msg = malloc(len * sizeof(char));
 
 	if (!err_msg)

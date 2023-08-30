@@ -34,7 +34,7 @@ int main(__attribute__((unused)) int argc, char **argv)
 				continue;
 			}
 			cmd = get_path_loc("PATH", grid[0]);
-			if (cmd == NULL)
+			if (!cmd)
 			{
 				zerror(argv[0], cnt, grid[0]);
 				free(grid);
