@@ -30,7 +30,7 @@ char **string_to_array(char *s)
 {
 	int i = 0;
 	char **arr, *token;
-	const char *sep = " \n";
+	char *sep = " \n";
 
 	/** Create Dynamic array */
 	arr = malloc(30 * sizeof(char *));
@@ -38,11 +38,11 @@ char **string_to_array(char *s)
 		return (NULL);
 
 	/** Get Token and use for loop to extract the rest. */
-	token = strtok(s, sep);
+	token = _strtok(s, sep);
 	while (token != NULL)
 	{
 		arr[i] = token;
-		token = strtok(NULL, sep);
+		token = _strtok(NULL, sep);
 		i++;
 	}
 	arr[i] = NULL;
@@ -65,8 +65,8 @@ char *get_path_loc(char *path, char *cmd)
 	if (!paths)
 		return (NULL);
 
-	token = strtok(paths, ":");
-	for (; token != NULL; token = strtok(NULL, ":"))
+	token = _strtok(paths, ":");
+	for (; token != NULL; token = _strtok(NULL, ":"))
 	{
 		command = malloc(_strlen(cmd) + _strlen(token) + 2);
 		if (!command)

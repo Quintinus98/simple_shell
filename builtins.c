@@ -30,10 +30,10 @@ int (*builtins(char *s))(char **argv, char *line)
  * @line: string passed into program.
  * Return: Always 0.
 */
-int _exitshell(char **argv, char *line)
+int _exitshell(char **argv, __attribute__((unused)) char *line)
 {
-	(void)line;
 	free_grid(argv);
+	free(environ);
 	exit(errno);
 	return (errno);
 }
@@ -55,6 +55,5 @@ int _printenv(char **argv, char *line)
 		_puts(environ[i]);
 		_putchar('\n');
 	}
-	free(environ);
 	return (0);
 }

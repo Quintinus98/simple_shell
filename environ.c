@@ -31,32 +31,23 @@ char **_copyenviron(void)
 
 char *_getenv(char *name)
 {
-	int k = 0, len = 0, envl = 0;
-	char *str = NULL, *sp;
-	char **env = environ;
+	int k = 0, len = 0, i = 0;
+	char *str = NULL, *sp = NULL;
 
 	if (!name || name[0] == '\0')
 		return (NULL);
 
 	len = _strlen(name);
 	/** Get env matching name and = sign.*/
-	while (*env != NULL)
-	{
-		if (_strncmp(*env, name, len) == 0 && (*env)[len] == '=')
-			break;
-		env++;
-	}
+	for (i = 0; environ[i] != NULL; i++)
+		if (_strncmp(environ[i], name, len) == 0 && environ[i][len] == '=')
+			sp = _strdup(environ[i]);
 
-	if (*env == NULL)
-		return (NULL);
-
-	sp = _strdup(*env);
 	if (!sp)
 		return (NULL);
 
 	len++;
-	envl = _strlen(sp);
-	str = malloc((envl - len) * sizeof(char));
+	str = malloc((_strlen(sp) - len) * sizeof(char));
 	if (!str)
 		return (NULL);
 	for (; sp[len + k] != '\0'; k++)
@@ -126,7 +117,7 @@ int _setenv(char *name, char *value, int overwrite)
 	/** Remove name */
 	err = _unsetenv(name);
 	if (err == -1)
-		return err;
+		return (err);
 
 	env = malloc(_strlen(name) + _strlen(value) + 2);
 	if (!env)
@@ -138,11 +129,12 @@ int _setenv(char *name, char *value, int overwrite)
 
 	err = _putenv(env);
 	if (err == -1)
-		return err;
+		return (err);
 	return (0);
 }
 
-/** _putenv - Puts an env variable into environ
+/**
+ * _putenv - Puts an env variable into environ
  * @env: environment variable
  * Return: 0 if successful or -1 if it fails.
 */

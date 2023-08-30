@@ -35,7 +35,6 @@ int exec_cmd(char **arr, char **argv, char *cmd)
 		errno = status;
 		free(cmd);
 		free(arr);
-		free(environ);
 	}
 	return (status);
 }
@@ -69,6 +68,5 @@ void execute(char **arr, char **argv)
 			status = WEXITSTATUS(status);
 		errno = status;
 		free(arr);
-		free(environ);
 	}
 }

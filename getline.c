@@ -12,7 +12,7 @@ int _getline(char **linep, size_t *linecapp, FILE *stream)
 {
 	char ch = '0', *str;
 	ssize_t fd, st;
-	static size_t val ;
+	static size_t val;
 
 	if (linep == NULL || linecapp == NULL)
 	{
@@ -33,7 +33,6 @@ int _getline(char **linep, size_t *linecapp, FILE *stream)
 			free(str);
 			return (-1);
 		}
-		
 		str[val] = ch;
 		if (val == (*linecapp - 1))
 		{

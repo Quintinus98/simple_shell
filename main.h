@@ -54,6 +54,10 @@ void _puts(char *str);
 int _putchar(char c);
 char *_memcpy(char *dest, char *src, unsigned int n);
 void *_realloc(void *ptr, unsigned int old_size, unsigned int new_size);
+char *_itoa(int value);
+
+/** aux_funcs4.c */
+int ilen(int n);
 
 /** builtins.c */
 int (*builtins(char *s))(char **argv, char *line);
@@ -62,5 +66,9 @@ int _printenv(char **argv, char *line);
 
 /** getline.c */
 int _getline(char **linep, size_t *linecapp, FILE *stream);
+
+/** strtok.c */
+char *_strtok(char *str, char *sep);
+int is_sep(char ch, char *sep);
 
 #endif
