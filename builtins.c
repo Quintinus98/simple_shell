@@ -5,7 +5,7 @@
  * @s: string to compare.
  * Return: Always 0.
 */
-int (*builtins(char *s))(char **grid, char *line)
+int (*builtins(char *s))(char **grid, int cnt)
 {
 	builtin_t sys[] = {
 		{"exit", _exitshell},
@@ -27,29 +27,35 @@ int (*builtins(char *s))(char **grid, char *line)
 /**
  * _exitshell - exits shell.
  * @grid: list of arguments
- * @line: string passed into program.
+ * @cnt: count of program run.
  * Return: Always 0.
 */
-int _exitshell(char **grid, __attribute__((unused)) char *line)
+int _exitshell(char **grid, int cnt)
 {
-	int status = _atoi(grid[1]);
+	int status = errno;
 
-	free_grid(grid);
-	free(environ);
-	if (!grid[1])
+	if (grid[1])
 	{
-		exit(errno);
+		status = _atoi(grid[1]);
+		if (status <= 0)
+		{
+			exitError(cnt, grid[1]);
+			status = 2;
+		}
 	}
+
+	free(grid);
+	free(environ);
 	exit(status);
 }
 
 /**
  * _printenv - prints env.
  * @grid: list of arguments
- * @line: string passed into program.
+ * @cnt: count of program run.
  * Return: Always 0.
 */
-int _printenv(char **grid, __attribute__((unused)) char *line)
+int _printenv(char **grid, __attribute__((unused)) int cnt)
 {
 	int i;
 

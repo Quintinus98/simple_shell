@@ -16,7 +16,7 @@ extern char **environ;
 typedef struct builtin
 {
 	char *builtin;
-	int (*f)(char **arg, char *line);
+	int (*f)(char **grid, int cnt);
 } builtin_t;
 
 /** essentials.c */
@@ -36,7 +36,6 @@ int _setenv(char *name, char *value, int overwrite);
 int _putenv(char *env);
 
 /** aux_funcs1.c */
-void zerror(char *prog, int count, char *cmd);
 void free_grid(char **grid);
 int _strlen(char *str);
 int _strcmp(char *s1, char *s2);
@@ -60,9 +59,9 @@ int _atoi(char *s);
 int ilen(int n);
 
 /** builtins.c */
-int (*builtins(char *s))(char **grid, char *line);
-int _exitshell(char **argv, char *line);
-int _printenv(char **argv, char *line);
+int (*builtins(char *s))(char **grid, int cnt);
+int _exitshell(char **grid, int cnt);
+int _printenv(char **grid, int cnt);
 
 /** getline.c */
 int _getline(char **linep, size_t *linecapp, FILE *stream);
@@ -70,5 +69,9 @@ int _getline(char **linep, size_t *linecapp, FILE *stream);
 /** strtok.c */
 char *_strtok(char *str, char *sep);
 int is_sep(char ch, char *sep);
+
+/** errors.c */
+void zerror(char *prog, int count, char *cmd);
+void exitError(int count, char *val);
 
 #endif

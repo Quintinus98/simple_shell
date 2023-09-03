@@ -84,6 +84,9 @@ char *_itoa(int value)
 
 	for (i = (len - 1); i >= 0; i--)
 	{
+		if (value < 0)
+			buffer[0] = '-';
+
 		buffer[i] = (value % 10) + '0';
 		value /= 10;
 	}
