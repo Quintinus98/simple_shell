@@ -28,12 +28,9 @@ int main(__attribute__((unused)) int argc, char **argv)
 		/** If cmd is not found e.g ls */
 		builtin = builtins(grid[0]);
 		if (builtin)
-		{
 			builtin(grid, line);
-			continue;
-		}
-
-    prepare_exec(grid, argv, cnt);
+		else
+    	prepare_exec(grid, argv, cnt);
 		free(line);
 	}
 	return (errno);
