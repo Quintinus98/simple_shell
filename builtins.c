@@ -5,7 +5,7 @@
  * @s: string to compare.
  * Return: Always 0.
 */
-int (*builtins(char *s))(char **argv, char *line)
+int (*builtins(char *s))(char **grid, char *line)
 {
 	builtin_t sys[] = {
 		{"exit", _exitshell},
@@ -26,29 +26,28 @@ int (*builtins(char *s))(char **argv, char *line)
 
 /**
  * _exitshell - exits shell.
- * @argv: list of arguments
+ * @grid: list of arguments
  * @line: string passed into program.
  * Return: Always 0.
 */
-int _exitshell(char **argv, __attribute__((unused)) char *line)
+int _exitshell(char **grid, __attribute__((unused)) char *line)
 {
-	free_grid(argv);
+	free_grid(grid);
 	free(environ);
 	exit(errno);
 }
 
 /**
  * _printenv - prints env.
- * @argv: list of arguments
+ * @grid: list of arguments
  * @line: string passed into program.
  * Return: Always 0.
 */
-int _printenv(char **argv, char *line)
+int _printenv(char **grid, __attribute__((unused)) char *line)
 {
 	int i;
 
-	free(argv);
-	(void)line;
+	free(grid);
 	for (i = 0; environ[i]; i++)
 	{
 		_puts(environ[i]);

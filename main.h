@@ -59,7 +59,7 @@ char *_itoa(int value);
 int ilen(int n);
 
 /** builtins.c */
-int (*builtins(char *s))(char **argv, char *line);
+int (*builtins(char *s))(char **grid, char *line);
 int _exitshell(char **argv, char *line);
 int _printenv(char **argv, char *line);
 
