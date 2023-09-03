@@ -31,8 +31,8 @@ void prepare_exec (char **grid, char **argv, int cnt);
 /** environ.c */
 char **_copyenviron(void);
 char *_getenv(char *name);
-int _unsetenv(char *name);
-int _setenv(char *name, char *value, int overwrite);
+int _unsetenv(char **grid, int cnt);
+int _setenv(char **grid, int cnt);
 int _putenv(char *env);
 
 /** aux_funcs1.c */

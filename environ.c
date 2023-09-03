@@ -64,8 +64,9 @@ char *_getenv(char *name)
  * @name: Name of env to unset
  * Return: Always 0.
 */
-int _unsetenv(char *name)
+int _unsetenv(char **grid, __attribute__((unused)) int cnt)
 {
+	char *name = grid[1];
 	int len = _strlen(name);
 	char **env = environ, **entries;
 
@@ -86,38 +87,37 @@ int _unsetenv(char *name)
 		else
 			env++;
 	}
+	free(grid);
 	return (0);
 }
 
 /**
  * _setenv - sets an env
- * @name: Name of env to set
- * @value: value of name
- * @overwrite: 1 to overwrite 0 not to overwrite.
- * Return: Always 0.
+ * @grid: array of commands
+ * @cnt: count
+ * Return: Always 0 if successful and -1 if not.
 */
-int _setenv(char *name, char *value, int overwrite)
+int _setenv(char **grid, int cnt)
 {
-	char *env, *envName;
 	int err;
+	char *env, *val_from_name;
+	char *name = grid[1], *value = grid[2];
 
 	/** Check if name, value = null, string name does not contain = */
-	if (!name || _strchr(name, '=') != NULL || !value)
+	if (!name || _strchr(name, '=') || !value)
 	{
 		errno = EINVAL;
 		return (-1);
 	}
 	/** name exists and do not overwrite */
-	envName = _getenv(name);
-	if (envName != NULL && overwrite == 0)
+	val_from_name = _getenv(name);
+	if (val_from_name)
 	{
-		free(envName);
-		return (0);
+		/** Remove name */
+		err = _unsetenv(grid, cnt);
+		if (err == -1)
+			return (err);
 	}
-	/** Remove name */
-	err = _unsetenv(name);
-	if (err == -1)
-		return (err);
 
 	env = malloc(_strlen(name) + _strlen(value) + 2);
 	if (!env)
@@ -130,6 +130,9 @@ int _setenv(char *name, char *value, int overwrite)
 	err = _putenv(env);
 	if (err == -1)
 		return (err);
+	free(env);
+	if (!val_from_name)
+		free(grid);
 	return (0);
 }
 
@@ -141,20 +144,19 @@ int _setenv(char *name, char *value, int overwrite)
 int _putenv(char *env)
 {
 	int len = 0, i = 0;
-	char **new_env;
+	char **new_environ;
 
 	while (environ[len])
 		len++;
-
-	new_env = _realloc(environ, len, (len + 2));
-	if (!new_env)
+	new_environ = malloc((len + 2) * sizeof(char *));
+	if (!new_environ)
 		return (-1);
-	for (i = 0; environ[i]; i++)
-		new_env[i] = environ[i];
+	for (; environ[i]; i++)
+		new_environ[i] = environ[i];
 	free(environ);
-	environ = new_env;
-	environ[i] = env;
-	environ[i + 1] = NULL;
+	environ = new_environ;
+	environ[len] = env;
+	environ[len + 1] = NULL;
 
 	return (0);
 }

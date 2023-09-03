@@ -29,6 +29,8 @@ int main(__attribute__((unused)) int argc, char **argv)
 		builtin = builtins(grid[0]);
 		if (builtin)
 		{
+			if (strcmp("exit", grid[0]) == 0)
+				free(line);
 			builtin(grid, cnt);
 		}
 		else

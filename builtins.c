@@ -10,6 +10,8 @@ int (*builtins(char *s))(char **grid, int cnt)
 	builtin_t sys[] = {
 		{"exit", _exitshell},
 		{"env", _printenv},
+		{"setenv", _setenv},
+		{"unsetenv", _unsetenv},
 		{NULL, NULL}
 	};
 	int i = 0;
