@@ -34,6 +34,7 @@ int main(__attribute__((unused)) int argc, char **argv)
 		}
 
     prepare_exec(grid, argv, cnt);
+		free(line);
 	}
 	return (errno);
 }
