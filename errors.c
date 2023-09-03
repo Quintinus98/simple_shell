@@ -35,7 +35,7 @@ void zerror(char *prog, int count, char *cmd)
 */
 void exitError(int count, char *val)
 {
-  char *cmdc = _itoa(count);
+	char *cmdc = _itoa(count);
 	size_t len = _strlen(val) + ilen(count) + 32;
 	char *err_msg = malloc(len * sizeof(char));
 
@@ -44,8 +44,8 @@ void exitError(int count, char *val)
 	_strcpy(err_msg, "./hsh: ");
 	_strcat(err_msg, cmdc);
 	_strcat(err_msg, ": exit: Illegal number: ");
-  _strcat(err_msg, val);
-  _strcat(err_msg, "\n");
+	_strcat(err_msg, val);
+	_strcat(err_msg, "\n");
 
 	write(STDERR_FILENO, err_msg, len);
 	free(cmdc);

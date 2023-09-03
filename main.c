@@ -32,7 +32,7 @@ int main(__attribute__((unused)) int argc, char **argv)
 			builtin(grid, cnt);
 		}
 		else
-    	prepare_exec(grid, argv, cnt);
+			prepare_exec(grid, argv, cnt);
 		free(line);
 	}
 	return (errno);

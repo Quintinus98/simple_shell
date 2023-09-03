@@ -25,7 +25,7 @@ char **string_to_array(char *s);
 char *get_path_loc(char *path, char *name);
 
 /** execute.c */
-int _exec(char **arr, char **argv, char *cmd);
+int _exec(char **grid, char **argv, char *cmd);
 void prepare_exec (char **grid, char **argv, int cnt);
 
 /** environ.c */
