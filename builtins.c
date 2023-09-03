@@ -32,9 +32,15 @@ int (*builtins(char *s))(char **grid, char *line)
 */
 int _exitshell(char **grid, __attribute__((unused)) char *line)
 {
+	int status = _atoi(grid[1]);
+
 	free_grid(grid);
 	free(environ);
-	exit(errno);
+	if (!grid[1])
+	{
+		exit(errno);
+	}
+	exit(status);
 }
 
 /**
@@ -47,11 +53,13 @@ int _printenv(char **grid, __attribute__((unused)) char *line)
 {
 	int i;
 
-	free(grid);
+	if (!environ)
+		return (-1);
 	for (i = 0; environ[i]; i++)
 	{
 		_puts(environ[i]);
 		_putchar('\n');
 	}
+	free(grid);
 	return (0);
 }
