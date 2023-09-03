@@ -24,6 +24,7 @@ void zerror(char *prog, int count, char *cmd)
 	write(STDERR_FILENO, err_msg, len);
 	free(cmdc);
 	free(err_msg);
+	errno = 127;
 }
 
 /**

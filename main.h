@@ -25,8 +25,8 @@ char **string_to_array(char *s);
 char *get_path_loc(char *path, char *name);
 
 /** execute.c */
-int exec_cmd(char **arr, char **argv, char *cmd);
-void execute(char **arr, char **argv);
+int _exec(char **arr, char **argv, char *cmd);
+void prepare_exec (char **grid, char **argv, int cnt);
 
 /** environ.c */
 char **_copyenviron(void);
@@ -52,7 +52,6 @@ char *_strncat(char *dest, char *src, size_t n);
 /** aux_funcs3.c */
 void _puts(char *str);
 int _putchar(char c);
-char *_memcpy(char *dest, char *src, unsigned int n);
 void *_realloc(void *ptr, unsigned int old_size, unsigned int new_size);
 char *_itoa(int value);
 

@@ -25,32 +25,6 @@ int _putchar(char c)
 }
 
 /**
- * _memcpy - Copies memory area
- * @dest: Destination
- * @src: Source memory area
- * @n: Copies
- *
- * Return: 0
- */
-
-char *_memcpy(char *dest, char *src, unsigned int n)
-{
-	char *destAdd = dest;
-	unsigned int i = 0;
-
-	for (; i < n; i++)
-	{
-		*dest = *src;
-		src++;
-		dest++;
-	}
-	dest = destAdd;
-
-	return (dest);
-}
-
-
-/**
  * _realloc - reallocates a memory block using malloc and free
  * @ptr: ptr is a pointer to the memory previously allocated
  * @old_size: the size, in bytes, of the allocated space for ptr

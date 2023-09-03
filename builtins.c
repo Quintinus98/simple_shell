@@ -35,7 +35,6 @@ int _exitshell(char **argv, __attribute__((unused)) char *line)
 	free_grid(argv);
 	free(environ);
 	exit(errno);
-	return (errno);
 }
 
 /**
