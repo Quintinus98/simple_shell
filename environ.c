@@ -109,7 +109,7 @@ int _setenv(char **grid, int cnt)
 		errno = EINVAL;
 		return (-1);
 	}
-	/** name exists and do not overwrite */
+	/** name exists, overwrite*/
 	val_from_name = _getenv(name);
 	if (val_from_name)
 	{
@@ -130,7 +130,6 @@ int _setenv(char **grid, int cnt)
 	err = _putenv(env);
 	if (err == -1)
 		return (err);
-	free(env);
 	if (!val_from_name)
 		free(grid);
 	return (0);
@@ -143,20 +142,50 @@ int _setenv(char **grid, int cnt)
 */
 int _putenv(char *env)
 {
-	int len = 0, i = 0;
+	int len = 0, i = 0, j = 0;
 	char **new_environ;
 
 	while (environ[len])
 		len++;
+
 	new_environ = malloc((len + 2) * sizeof(char *));
 	if (!new_environ)
 		return (-1);
-	for (; environ[i]; i++)
-		new_environ[i] = environ[i];
+
+	for (i = 0; environ[i]; i++)
+	{
+		new_environ[i] = malloc((_strlen(environ[i]) + 1 )* sizeof(char));
+		for ( j = 0; environ[i][j] != '\0'; j++)
+		{
+			new_environ[i][j] = environ[i][j];
+		}
+		new_environ[i][j] = '\0';
+	}
+	new_environ[i] = malloc((_strlen(env) + 1) * sizeof(char));
+	for ( j = 0; env[j] != '\0'; j++)
+	{
+		new_environ[i][j] = env[j];
+	}
+	new_environ[i][j] = '\0';
+
 	free(environ);
+
+
+	free(env);
+	/**
+	 * Current issue
+	 * Fix freeing env and storing env in environ
+	*/
+
 	environ = new_environ;
-	environ[len] = env;
-	environ[len + 1] = NULL;
+	environ[len + 1]= NULL;
+
 
 	return (0);
 }
+
+/**
+ echo "env
+ setenv HBTN Holberton
+ env" | ./hsh
+*/
