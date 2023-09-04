@@ -17,7 +17,16 @@ char **_copyenviron(void)
 		return (NULL);
 
 	for (i = 0; environ[i]; i++)
-		env[i] = environ[i];
+	{
+		env[i] = malloc((_strlen(environ[i]) + 1) * sizeof(char));
+		if (!env[i])
+		{
+			for (i--; i >= 0; i--)
+				free(env[i]);
+			return (NULL);
+		}
+		_strcpy(env[i], environ[i]);
+	}
 	env[i] = NULL;
 
 	return (env);
@@ -142,7 +151,7 @@ int _setenv(char **grid, int cnt)
 */
 int _putenv(char *env)
 {
-	int len = 0, i = 0, j = 0;
+	int len = 0, i = 0;
 	char **new_environ;
 
 	while (environ[len])
@@ -154,28 +163,10 @@ int _putenv(char *env)
 
 	for (i = 0; environ[i]; i++)
 	{
-		new_environ[i] = malloc((_strlen(environ[i]) + 1 )* sizeof(char));
-		for ( j = 0; environ[i][j] != '\0'; j++)
-		{
-			new_environ[i][j] = environ[i][j];
-		}
-		new_environ[i][j] = '\0';
+		new_environ[i] = environ[i];
 	}
-	new_environ[i] = malloc((_strlen(env) + 1) * sizeof(char));
-	for ( j = 0; env[j] != '\0'; j++)
-	{
-		new_environ[i][j] = env[j];
-	}
-	new_environ[i][j] = '\0';
-
+	new_environ[i] = env;
 	free(environ);
-
-
-	free(env);
-	/**
-	 * Current issue
-	 * Fix freeing env and storing env in environ
-	*/
 
 	environ = new_environ;
 	environ[len + 1]= NULL;

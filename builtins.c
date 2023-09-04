@@ -47,7 +47,7 @@ int _exitshell(char **grid, int cnt)
 	}
 
 	free(grid);
-	free(environ);
+	free_grid(environ);
 	exit(status);
 }
 
