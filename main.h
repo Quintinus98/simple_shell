@@ -19,6 +19,12 @@ typedef struct builtin
 	int (*f)(char **grid, int cnt);
 } builtin_t;
 
+typedef struct env_list
+{
+	char *env_str;
+	struct env_list *next;
+} env_t;
+
 /** essentials.c */
 void prompt(int mode, char **line);
 char **string_to_array(char *s);

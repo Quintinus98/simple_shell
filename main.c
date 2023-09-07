@@ -25,7 +25,7 @@ int main(__attribute__((unused)) int argc, char **argv)
 			continue;
 		}
 
-		/** If cmd is not found e.g ls */
+		/** Check if grid[0] is a builtin. */
 		builtin = builtins(grid[0]);
 		if (builtin)
 		{

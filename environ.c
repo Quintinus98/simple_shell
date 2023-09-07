@@ -118,6 +118,7 @@ int _setenv(char **grid, int cnt)
 		errno = EINVAL;
 		return (-1);
 	}
+
 	/** name exists, overwrite*/
 	val_from_name = _getenv(name);
 	if (val_from_name)
@@ -131,7 +132,6 @@ int _setenv(char **grid, int cnt)
 	env = malloc(_strlen(name) + _strlen(value) + 2);
 	if (!env)
 		return (-1);
-
 	_strcpy(env, name);
 	_strcat(env, "=");
 	_strcat(env, value);
@@ -139,8 +139,10 @@ int _setenv(char **grid, int cnt)
 	err = _putenv(env);
 	if (err == -1)
 		return (err);
+
 	if (!val_from_name)
 		free(grid);
+
 	return (0);
 }
 
@@ -165,11 +167,10 @@ int _putenv(char *env)
 	{
 		new_environ[i] = environ[i];
 	}
-	new_environ[i] = env;
 	free(environ);
-
 	environ = new_environ;
-	environ[len + 1]= NULL;
+	environ[i] = env;
+	environ[i + 1]= NULL;
 
 
 	return (0);
