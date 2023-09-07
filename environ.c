@@ -76,8 +76,8 @@ char *_getenv(char *name)
 int _unsetenv(char **grid, __attribute__((unused)) int cnt)
 {
 	char *name = grid[1];
-	int len = _strlen(name);
-	char **env = environ, **entries;
+	int len = _strlen(name), i, j;
+	char **env = environ, **new_environ;
 
 	/** Check if name = null, string name does not contain = */
 	if (!name || _strchr(name, '=') != NULL || name[0] == '\0')
@@ -86,16 +86,33 @@ int _unsetenv(char **grid, __attribute__((unused)) int cnt)
 		return (-1);
 	}
 
-	while (*env != NULL)
+	for (i = 0; environ[i]; i++);
+
+	new_environ = malloc((i) * sizeof(char *));
+	if (!new_environ)
+	{
+		free(grid);
+		return (-1);
+	}
+
+	i = 0, j = 0;
+	for (; env[i] != NULL; i++)
 	{
 		/** Compare env with name for length len.*/
 		/** for: continue loop. */
-		if (_strncmp(*env, name, len) == 0 && (*env)[len] == '=')
-			for (entries = env; *entries != NULL; entries++)
-				*entries = *(entries + 1);
+		if (_strncmp(env[i], name, len) == 0 && env[i][len] == '=')
+		{
+			free(env[i]);
+			continue;
+		}
 		else
-			env++;
+			new_environ[j] = env[i];
+		j++;
 	}
+	free(environ);
+	environ = new_environ;
+	environ[j] = NULL;
+
 	free(grid);
 	return (0);
 }
@@ -123,10 +140,20 @@ int _setenv(char **grid, int cnt)
 	val_from_name = _getenv(name);
 	if (val_from_name)
 	{
+		if (_strcmp(val_from_name, value) == 0)
+		{
+			free(val_from_name);
+			free(grid);
+			return (0);
+		}
+
 		/** Remove name */
 		err = _unsetenv(grid, cnt);
 		if (err == -1)
+		{
+			free(val_from_name);
 			return (err);
+		}
 	}
 
 	env = malloc(_strlen(name) + _strlen(value) + 2);
@@ -142,6 +169,8 @@ int _setenv(char **grid, int cnt)
 
 	if (!val_from_name)
 		free(grid);
+	else
+		free(val_from_name);
 
 	return (0);
 }
