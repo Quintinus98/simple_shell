@@ -61,6 +61,7 @@ int _printenv(char **grid, __attribute__((unused)) int cnt)
 {
 	int i;
 
+	(void)grid;
 	if (!environ)
 		return (-1);
 	for (i = 0; environ[i]; i++)
@@ -68,6 +69,6 @@ int _printenv(char **grid, __attribute__((unused)) int cnt)
 		_puts(environ[i]);
 		_putchar('\n');
 	}
-	free(grid);
+
 	return (0);
 }

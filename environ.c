@@ -70,50 +70,44 @@ char *_getenv(char *name)
 
 /**
  * _unsetenv - Unsets an env
- * @name: Name of env to unset
+ * @grid: Grid of values
+ * @cnt: Number of times program has been executed.
  * Return: Always 0.
 */
 int _unsetenv(char **grid, __attribute__((unused)) int cnt)
 {
-	char *name = grid[1];
+	char **env = environ, **new_environ, *name = grid[1], *temp;
 	int len = _strlen(name), i, j;
-	char **env = environ, **new_environ;
 
 	/** Check if name = null, string name does not contain = */
-	if (!name || _strchr(name, '=') != NULL || name[0] == '\0')
+	for (i = 0; environ[i]; i++)
+		;
+	new_environ = malloc((i) * sizeof(char *));
+	if (!name || _strchr(name, '=') != NULL || !new_environ)
 	{
 		errno = EINVAL;
 		return (-1);
 	}
 
-	for (i = 0; environ[i]; i++);
+	if ((temp = _getenv(name)) == NULL)
+		return (0);
+	else
+		free(temp);
 
-	new_environ = malloc((i) * sizeof(char *));
-	if (!new_environ)
+	for (i = 0, j = 0; env[i] != NULL; i++)
 	{
-		free(grid);
-		return (-1);
-	}
-
-	i = 0, j = 0;
-	for (; env[i] != NULL; i++)
-	{
-		/** Compare env with name for length len.*/
-		/** for: continue loop. */
 		if (_strncmp(env[i], name, len) == 0 && env[i][len] == '=')
 		{
 			free(env[i]);
 			continue;
 		}
-		else
-			new_environ[j] = env[i];
+		new_environ[j] = env[i];
 		j++;
 	}
 	free(environ);
 	environ = new_environ;
 	environ[j] = NULL;
 
-	free(grid);
 	return (0);
 }
 
@@ -126,16 +120,13 @@ int _unsetenv(char **grid, __attribute__((unused)) int cnt)
 int _setenv(char **grid, int cnt)
 {
 	int err;
-	char *env, *val_from_name;
-	char *name = grid[1], *value = grid[2];
+	char *env, *val_from_name, *name = grid[1], *value = grid[2];
 
-	/** Check if name, value = null, string name does not contain = */
 	if (!name || _strchr(name, '=') || !value)
 	{
 		errno = EINVAL;
 		return (-1);
 	}
-
 	/** name exists, overwrite*/
 	val_from_name = _getenv(name);
 	if (val_from_name)
@@ -143,22 +134,18 @@ int _setenv(char **grid, int cnt)
 		if (_strcmp(val_from_name, value) == 0)
 		{
 			free(val_from_name);
-			free(grid);
 			return (0);
 		}
+		free(val_from_name);
 
-		/** Remove name */
 		err = _unsetenv(grid, cnt);
 		if (err == -1)
-		{
-			free(val_from_name);
 			return (err);
-		}
 	}
-
 	env = malloc(_strlen(name) + _strlen(value) + 2);
 	if (!env)
 		return (-1);
+
 	_strcpy(env, name);
 	_strcat(env, "=");
 	_strcat(env, value);
@@ -166,11 +153,6 @@ int _setenv(char **grid, int cnt)
 	err = _putenv(env);
 	if (err == -1)
 		return (err);
-
-	if (!val_from_name)
-		free(grid);
-	else
-		free(val_from_name);
 
 	return (0);
 }
@@ -199,14 +181,8 @@ int _putenv(char *env)
 	free(environ);
 	environ = new_environ;
 	environ[i] = env;
-	environ[i + 1]= NULL;
+	environ[i + 1] = NULL;
 
 
 	return (0);
 }
-
-/**
- echo "env
- setenv HBTN Holberton
- env" | ./hsh
-*/

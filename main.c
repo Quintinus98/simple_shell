@@ -32,6 +32,7 @@ int main(__attribute__((unused)) int argc, char **argv)
 			if (strcmp("exit", grid[0]) == 0)
 				free(line);
 			builtin(grid, cnt);
+			free(grid);
 		}
 		else
 			prepare_exec(grid, argv, cnt);
