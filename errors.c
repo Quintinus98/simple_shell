@@ -51,3 +51,14 @@ void exitError(int count, char *val)
 	free(cmdc);
 	free(err_msg);
 }
+
+/**
+ * cdError - prints cd error
+ * @cmd: cmd that failed;
+*/
+void cdError(char *cmd)
+{
+	write(1, "cd: no such file or directory: ", 31);
+	write(1, cmd, _strlen(cmd));
+	write(1, "\n", 1);
+}

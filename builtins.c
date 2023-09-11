@@ -12,6 +12,7 @@ int (*builtins(char *s))(char **grid, int cnt)
 		{"env", _printenv},
 		{"setenv", _setenv},
 		{"unsetenv", _unsetenv},
+		{"cd", _chdir},
 		{NULL, NULL}
 	};
 	int i = 0;
@@ -70,5 +71,81 @@ int _printenv(char **grid, __attribute__((unused)) int cnt)
 		_putchar('\n');
 	}
 
+	return (0);
+}
+
+/**
+ * _updatewd - Updates working directory
+ * @mode: OLDPWD or PWD
+ * @cur: current directory;
+*/
+void _updatewd(char *mode, char *cur)
+{
+	char **workdir;
+	char *str;
+	char dir[255];
+
+	if (!cur)
+		getcwd(dir, 255);
+	else
+		_strcpy(dir, cur);
+
+	if (_strcmp(mode, "OLDPWD=") == 0)
+		workdir = _getenv("OLDPWD");
+	else
+		workdir = _getenv("PWD");
+
+	str = malloc((_strlen(dir) + _strlen(mode)));
+	_strcpy(str, mode);
+	_strcat(str, dir);
+	free(*workdir);
+	*workdir = str;
+}
+
+/**
+ * _chdir - Changes directory
+ * @grid: list of arguments
+ * @cnt: count of program run.
+ * Return: On success zero (0).
+*/
+int _chdir(char **grid, __attribute__((unused)) int cnt)
+{
+	char **home = NULL, previous[255], current[255];
+	char **oldpwd = _getenv("OLDPWD"), **pwd = _getenv("PWD"), *str;
+
+	if (grid[1] == NULL || _strcmp(grid[1], "~") == 0)
+	{
+		_updatewd("OLDPWD=", NULL);
+		home = _getenv("HOME");
+		chdir(*home + 5);
+		_updatewd("PWD=", NULL);
+	}
+	else if (_strcmp(grid[1], "-") == 0)
+	{
+		getcwd(current, 255);
+		free(*pwd);
+		*pwd = _strdup(*oldpwd + 3);
+		free(*oldpwd);
+		str = malloc((_strlen(current) + 7));
+		_strcpy(str, "OLDPWD=");
+		_strcat(str, current);
+		*oldpwd = str;
+
+		chdir(*pwd + 4);
+	}
+	else
+	{
+		getcwd(previous, 255);
+		if (chdir(grid[1]) == 0)
+		{
+			_updatewd("OLDPWD=", previous);
+			_updatewd("PWD=", NULL);
+		}
+		else
+		{
+			cdError(grid[1]);
+			return (-1);
+		}
+	}
 	return (0);
 }

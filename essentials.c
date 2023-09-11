@@ -58,13 +58,14 @@ char **string_to_array(char *s)
 */
 char *get_path_loc(char *path, char *cmd)
 {
-	char *paths, *token, *command;
+	char *paths, **dir, *token, *command;
 	struct stat st;
 
-	paths = _getenv(path);
-	if (!paths)
+	dir = _getenv(path);
+	if (!*dir)
 		return (NULL);
 
+	paths = _strdup(*dir);
 	token = _strtok(paths, ":");
 	for (; token != NULL; token = _strtok(NULL, ":"))
 	{

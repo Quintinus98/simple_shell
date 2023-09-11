@@ -38,10 +38,9 @@ char **_copyenviron(void)
  * Return: Environment variable.
 */
 
-char *_getenv(char *name)
+char **_getenv(char *name)
 {
-	int k = 0, len = 0, i = 0;
-	char *str = NULL, *sp = NULL;
+	int len = 0, i = 0;
 
 	if (!name || name[0] == '\0')
 		return (NULL);
@@ -50,65 +49,9 @@ char *_getenv(char *name)
 	/** Get env matching name and = sign.*/
 	for (i = 0; environ[i] != NULL; i++)
 		if (_strncmp(environ[i], name, len) == 0 && environ[i][len] == '=')
-			sp = _strdup(environ[i]);
+			return (&environ[i]);
 
-	if (!sp)
-		return (NULL);
-
-	len++;
-	str = malloc((_strlen(sp) - len) * sizeof(char));
-	if (!str)
-		return (NULL);
-	for (; sp[len + k] != '\0'; k++)
-		str[k] = sp[len + k];
-	str[k] = '\0';
-
-	free(sp);
-	/** Always remember to free str. */
-	return (str);
-}
-
-/**
- * _unsetenv - Unsets an env
- * @grid: Grid of values
- * @cnt: Number of times program has been executed.
- * Return: Always 0.
-*/
-int _unsetenv(char **grid, __attribute__((unused)) int cnt)
-{
-	char **env = environ, **new_environ, *name = grid[1], *temp;
-	int len = _strlen(name), i, j;
-
-	/** Check if name = null, string name does not contain = */
-	for (i = 0; environ[i]; i++)
-		;
-	new_environ = malloc((i) * sizeof(char *));
-	if (!name || _strchr(name, '=') != NULL || !new_environ)
-	{
-		errno = EINVAL;
-		return (-1);
-	}
-
-	if ((temp = _getenv(name)) == NULL)
-		return (0);
-	else
-		free(temp);
-
-	for (i = 0, j = 0; env[i] != NULL; i++)
-	{
-		if (_strncmp(env[i], name, len) == 0 && env[i][len] == '=')
-		{
-			free(env[i]);
-			continue;
-		}
-		new_environ[j] = env[i];
-		j++;
-	}
-	free(environ);
-	environ = new_environ;
-	environ[j] = NULL;
-
-	return (0);
+	return (NULL);
 }
 
 /**
@@ -119,29 +62,19 @@ int _unsetenv(char **grid, __attribute__((unused)) int cnt)
 */
 int _setenv(char **grid, int cnt)
 {
-	int err;
-	char *env, *val_from_name, *name = grid[1], *value = grid[2];
+	char *env, **val_from_name = NULL, *name = grid[1], *value = grid[2];
 
+	(void)cnt;
 	if (!name || _strchr(name, '=') || !value)
 	{
 		errno = EINVAL;
 		return (-1);
 	}
-	/** name exists, overwrite*/
+	/** get address from env.*/
 	val_from_name = _getenv(name);
-	if (val_from_name)
-	{
-		if (_strcmp(val_from_name, value) == 0)
-		{
-			free(val_from_name);
-			return (0);
-		}
-		free(val_from_name);
+	if (val_from_name != NULL && _strcmp(*val_from_name, value) == 0)
+		return (0);
 
-		err = _unsetenv(grid, cnt);
-		if (err == -1)
-			return (err);
-	}
 	env = malloc(_strlen(name) + _strlen(value) + 2);
 	if (!env)
 		return (-1);
@@ -150,9 +83,13 @@ int _setenv(char **grid, int cnt)
 	_strcat(env, "=");
 	_strcat(env, value);
 
-	err = _putenv(env);
-	if (err == -1)
-		return (err);
+	if (val_from_name)
+	{
+		free(*val_from_name);
+		*val_from_name = env;
+	}
+	else
+		_putenv(env);
 
 	return (0);
 }
@@ -183,6 +120,48 @@ int _putenv(char *env)
 	environ[i] = env;
 	environ[i + 1] = NULL;
 
+
+	return (0);
+}
+
+/**
+ * _unsetenv - Unsets an env
+ * @grid: Grid of values
+ * @cnt: Number of times program has been executed.
+ * Return: Always 0.
+*/
+int _unsetenv(char **grid, __attribute__((unused)) int cnt)
+{
+	char **env = environ, **new_environ, *name = grid[1], **temp;
+	int len = _strlen(name), i, j;
+
+	/** Check if name = null, string name does not contain = */
+	for (i = 0; environ[i]; i++)
+		;
+	new_environ = malloc((i) * sizeof(char *));
+	if (!name || _strchr(name, '=') != NULL || !new_environ)
+	{
+		errno = EINVAL;
+		return (-1);
+	}
+
+	temp = _getenv(name);
+	if (temp == NULL)
+		return (0);
+
+	for (i = 0, j = 0; env[i] != NULL; i++)
+	{
+		if (_strncmp(env[i], name, len) == 0 && env[i][len] == '=')
+		{
+			free(env[i]);
+			continue;
+		}
+		new_environ[j] = env[i];
+		j++;
+	}
+	free(environ);
+	environ = new_environ;
+	environ[j] = NULL;
 
 	return (0);
 }

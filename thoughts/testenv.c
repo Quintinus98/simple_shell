@@ -92,3 +92,34 @@ env_t *add_node_end(env_t **head, const char *str)
 		return (lastNode);
 	}
 }
+
+char *_getenv(char *name)
+{
+	int k = 0, len = 0, i = 0;
+	char *str = NULL, *sp = NULL;
+
+	if (!name || name[0] == '\0')
+		return (NULL);
+
+	len = _strlen(name);
+	/** Get env matching name and = sign.*/
+	for (i = 0; environ[i] != NULL; i++)
+		if (_strncmp(environ[i], name, len) == 0 && environ[i][len] == '=')
+			sp = _strdup(environ[i]);
+
+	if (!sp)
+		return (NULL);
+
+	len++;
+	str = malloc((_strlen(sp) - len) * sizeof(char));
+	if (!str)
+		return (NULL);
+	for (; sp[len + k] != '\0'; k++)
+		str[k] = sp[len + k];
+	str[k] = '\0';
+
+	free(sp);
+	/** Always remember to free str. */
+	return (str);
+}
+
