@@ -61,14 +61,15 @@ int _exitshell(char **grid, int cnt)
 int _printenv(char **grid, __attribute__((unused)) int cnt)
 {
 	int i;
+	char newline = '\n';
 
 	(void)grid;
 	if (!environ)
 		return (-1);
 	for (i = 0; environ[i]; i++)
 	{
-		_puts(environ[i]);
-		_putchar('\n');
+		write(STDOUT_FILENO, environ[i], _strlen(environ[i]));
+		write(STDOUT_FILENO, &newline, 1);
 	}
 
 	return (0);

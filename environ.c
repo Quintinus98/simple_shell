@@ -23,6 +23,7 @@ char **_copyenviron(void)
 		{
 			for (i--; i >= 0; i--)
 				free(env[i]);
+			free(env);
 			return (NULL);
 		}
 		_strcpy(env[i], environ[i]);
