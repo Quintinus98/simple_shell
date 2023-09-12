@@ -8,7 +8,7 @@
 */
 int main(__attribute__((unused)) int argc, char **argv)
 {
-	char *line = NULL, **grid;
+	char line[BUFSIZ], *dynline = NULL, **grid;
 	int mode = isatty(STDIN_FILENO), cnt = 0;
 	int (*builtin)(char **grid, int cnt);
 
@@ -17,7 +17,9 @@ int main(__attribute__((unused)) int argc, char **argv)
 	while (1 == 1)
 	{
 		cnt++;
-		prompt(mode, &line);
+		prompt(mode, &dynline);
+		_strcpy(line, dynline);
+		free(dynline);
 		grid = string_to_array(line);
 		if (grid[0] == NULL)
 		{
@@ -30,13 +32,10 @@ int main(__attribute__((unused)) int argc, char **argv)
 		if (builtin)
 		{
 			builtin(grid, cnt);
-			if (strcmp("exit", grid[0]) == 0)
-				free(line);
 			free(grid);
 		}
 		else
 			prepare_exec(grid, argv, cnt);
-		free(line);
 	}
 	return (errno);
 }
