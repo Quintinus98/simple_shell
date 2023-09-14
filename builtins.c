@@ -76,11 +76,11 @@ int _printenv(char **grid, __attribute__((unused)) int cnt)
 }
 
 /**
- * _updatewd - Updates working directory
+ * _updatedir - Updates working directory
  * @mode: OLDPWD or PWD
  * @cur: current directory;
 */
-void _updatewd(char *mode, char *cur)
+void _updatedir(char *mode, char *cur)
 {
 	char **workdir;
 	char *str;
@@ -111,36 +111,36 @@ void _updatewd(char *mode, char *cur)
 */
 int _chdir(char **grid, __attribute__((unused)) int cnt)
 {
-	char **home = NULL, previous[255], current[255];
-	char **oldpwd = _getenv("OLDPWD"), **pwd = _getenv("PWD"), *str;
+	char **home = NULL, dir[255], *str;
+	char **oldpwd = _getenv("OLDPWD"), **pwd = _getenv("PWD");
 
 	if (grid[1] == NULL || _strcmp(grid[1], "~") == 0)
 	{
-		_updatewd("OLDPWD=", NULL);
+		_updatedir("OLDPWD=", NULL);
 		home = _getenv("HOME");
 		chdir(*home + 5);
-		_updatewd("PWD=", NULL);
+		_updatedir("PWD=", NULL);
 	}
 	else if (_strcmp(grid[1], "-") == 0)
 	{
-		getcwd(current, 255);
+		getcwd(dir, 255);
 		free(*pwd);
 		*pwd = _strdup(*oldpwd + 3);
 		free(*oldpwd);
-		str = malloc((_strlen(current) + 7));
+		str = malloc((_strlen(dir) + 7));
 		_strcpy(str, "OLDPWD=");
-		_strcat(str, current);
+		_strcat(str, dir);
 		*oldpwd = str;
 
 		chdir(*pwd + 4);
 	}
 	else
 	{
-		getcwd(previous, 255);
+		getcwd(dir, 255);
 		if (chdir(grid[1]) == 0)
 		{
-			_updatewd("OLDPWD=", previous);
-			_updatewd("PWD=", NULL);
+			_updatedir("OLDPWD=", dir);
+			_updatedir("PWD=", NULL);
 		}
 		else
 		{

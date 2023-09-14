@@ -69,7 +69,7 @@ int (*builtins(char *s))(char **grid, int cnt);
 int _exitshell(char **grid, int cnt);
 int _printenv(char **grid, int cnt);
 int _chdir(char **grid, int cnt);
-void _updatewd(char *mode, char *cur);
+void _updatedir(char *mode, char *cur);
 
 /** getline.c */
 int _getline(char **linep, size_t *linecapp, FILE *stream);

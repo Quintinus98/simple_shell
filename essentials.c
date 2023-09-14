@@ -62,7 +62,7 @@ char *get_path_loc(char *path, char *cmd)
 	struct stat st;
 
 	dir = _getenv(path);
-	if (!*dir)
+	if (!dir)
 		return (NULL);
 
 	paths = _strdup(*dir);
