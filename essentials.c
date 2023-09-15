@@ -24,13 +24,13 @@ void prompt(int mode, char **line)
 /**
  * string_to_array - splits string
  * @s: array of string character.
+ * @sep: seperator.
  * Return: an array of each word of the string.
 */
-char **string_to_array(char *s)
+char **string_to_array(char *s, char *sep)
 {
 	int i = 0;
 	char **arr, *token;
-	char *sep = " \n";
 
 	/** Create Dynamic array */
 	arr = malloc(30 * sizeof(char *));

@@ -16,7 +16,7 @@ extern char **environ;
 typedef struct builtin
 {
 	char *builtin;
-	int (*f)(char **grid, int cnt);
+	int (*f)(char **grid, int cnt, char **lg);
 } builtin_t;
 
 typedef struct env_list
@@ -27,7 +27,7 @@ typedef struct env_list
 
 /** essentials.c */
 void prompt(int mode, char **line);
-char **string_to_array(char *s);
+char **string_to_array(char *s, char *sep);
 char *get_path_loc(char *path, char *name);
 
 /** execute.c */
@@ -37,8 +37,6 @@ void prepare_exec (char **grid, char **argv, int cnt);
 /** environ.c */
 char **_copyenviron(void);
 char **_getenv(char *name);
-int _unsetenv(char **grid, int cnt);
-int _setenv(char **grid, int cnt);
 int _putenv(char *env);
 
 /** aux_funcs1.c */
@@ -65,11 +63,16 @@ int _atoi(char *s);
 int ilen(int n);
 
 /** builtins.c */
-int (*builtins(char *s))(char **grid, int cnt);
-int _exitshell(char **grid, int cnt);
-int _printenv(char **grid, int cnt);
-int _chdir(char **grid, int cnt);
+int (*builtins(char *s))(char **grid, int cnt, char **lg);
+int _exitshell(char **grid, int cnt, char **lg);
+int _printenv(char **grid, int cnt, char **lg);
+int _chdir(char **grid, int cnt, char **lg);
 void _updatedir(char *mode, char *cur);
+
+/** builtin_funcs.c*/
+int _unsetenv(char **grid, int cnt, char **lg);
+int _setenv(char **grid, int cnt, char **lg);
+
 
 /** getline.c */
 int _getline(char **linep, size_t *linecapp, FILE *stream);

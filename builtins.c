@@ -5,7 +5,7 @@
  * @s: string to compare.
  * Return: Always 0.
 */
-int (*builtins(char *s))(char **grid, int cnt)
+int (*builtins(char *s))(char **grid, int cnt, char **lg)
 {
 	builtin_t sys[] = {
 		{"exit", _exitshell},
@@ -31,9 +31,10 @@ int (*builtins(char *s))(char **grid, int cnt)
  * _exitshell - exits shell.
  * @grid: list of arguments
  * @cnt: count of program run.
+ * @lg: line grid - Multi line grid.
  * Return: Always 0.
 */
-int _exitshell(char **grid, int cnt)
+int _exitshell(char **grid, int cnt, char **lg)
 {
 	int status = errno;
 
@@ -49,6 +50,7 @@ int _exitshell(char **grid, int cnt)
 
 	free(grid);
 	free_grid(environ);
+	free(lg);
 	exit(status);
 }
 
@@ -56,14 +58,17 @@ int _exitshell(char **grid, int cnt)
  * _printenv - prints env.
  * @grid: list of arguments
  * @cnt: count of program run.
+ * @lg: line grid - Multi line grid.
  * Return: Always 0.
 */
-int _printenv(char **grid, __attribute__((unused)) int cnt)
+int _printenv(char **grid, int cnt, char **lg)
 {
 	int i;
 	char newline = '\n';
 
 	(void)grid;
+	(void)lg;
+	(void)cnt;
 	if (!environ)
 		return (-1);
 	for (i = 0; environ[i]; i++)
@@ -107,17 +112,22 @@ void _updatedir(char *mode, char *cur)
  * _chdir - Changes directory
  * @grid: list of arguments
  * @cnt: count of program run.
+ * @lg: line grid - Multi line grid.
  * Return: On success zero (0).
 */
-int _chdir(char **grid, __attribute__((unused)) int cnt)
+int _chdir(char **grid, __attribute__((unused)) int cnt, char **lg)
 {
 	char **home = NULL, dir[255], *str;
 	char **oldpwd = _getenv("OLDPWD"), **pwd = _getenv("PWD");
 
+	(void)lg;
 	if (grid[1] == NULL || _strcmp(grid[1], "~") == 0)
 	{
-		_updatedir("OLDPWD=", NULL);
+		getcwd(dir, 255);
 		home = _getenv("HOME");
+		if (!home)
+			return (0);
+		_updatedir("OLDPWD=", dir);
 		chdir(*home + 5);
 		_updatedir("PWD=", NULL);
 	}
