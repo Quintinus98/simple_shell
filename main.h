@@ -25,6 +25,15 @@ typedef struct env_list
 	struct env_list *next;
 } env_t;
 
+typedef struct arraysub
+{
+	char **subarr;
+	char *logOp;
+	int pos;
+} arraysub_t;
+
+#define MAX_ELEM 10
+
 /** essentials.c */
 void prompt(int mode, char **line);
 char **string_to_array(char *s, char *sep);
@@ -64,7 +73,7 @@ int ilen(int n);
 
 /** builtins.c */
 int (*builtins(char *s))(char **grid, int cnt, char **lg);
-int _exitshell(char **grid, int cnt, char **lg);
+int _exitshell(char **grid, int cnt, char **lg, arraysub_t subgrid);
 int _printenv(char **grid, int cnt, char **lg);
 int _chdir(char **grid, int cnt, char **lg);
 void _updatedir(char *mode, char *cur);
@@ -85,5 +94,9 @@ int is_sep(char ch, char *sep);
 void zerror(char *prog, int count, char *cmd);
 void exitError(int count, char *val);
 void cdError(char *cmd);
+
+/** logicalOp.c */
+arraysub_t getSubArray(char **arr, int i);
+void freeSubArray(arraysub_t subArr);
 
 #endif

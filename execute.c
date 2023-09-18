@@ -33,7 +33,6 @@ int _exec(char **grid, char **argv, char *cmd)
 		if (WIFEXITED(status))
 			status = WEXITSTATUS(status);
 		errno = status;
-		free(grid);
 	}
 	return (status);
 }
@@ -67,7 +66,6 @@ void prepare_exec(char **grid, char **argv, int cnt)
 	if (!cmd || (access(cmd, X_OK) == -1))
 	{
 		zerror(argv[0], cnt, grid[0]);
-		free(grid);
 	}
 	else
 	{

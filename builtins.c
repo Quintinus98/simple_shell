@@ -8,7 +8,6 @@
 int (*builtins(char *s))(char **grid, int cnt, char **lg)
 {
 	builtin_t sys[] = {
-		{"exit", _exitshell},
 		{"env", _printenv},
 		{"setenv", _setenv},
 		{"unsetenv", _unsetenv},
@@ -32,9 +31,10 @@ int (*builtins(char *s))(char **grid, int cnt, char **lg)
  * @grid: list of arguments
  * @cnt: count of program run.
  * @lg: line grid - Multi line grid.
+ * @subgrid: sub grid.
  * Return: Always 0.
 */
-int _exitshell(char **grid, int cnt, char **lg)
+int _exitshell(char **grid, int cnt, char **lg, arraysub_t subgrid)
 {
 	int status = errno;
 
@@ -48,6 +48,7 @@ int _exitshell(char **grid, int cnt, char **lg)
 		}
 	}
 
+	freeSubArray(subgrid);
 	free(grid);
 	free_grid(environ);
 	free(lg);

@@ -58,7 +58,9 @@ void exitError(int count, char *val)
 */
 void cdError(char *cmd)
 {
-	write(STDERR_FILENO, "cd: no such file or directory: ", 31);
+	write(STDERR_FILENO, "./hsh: cd: ", 11);
 	write(STDERR_FILENO, cmd, _strlen(cmd));
-	write(STDERR_FILENO, "\n", 1);
+	write(STDERR_FILENO, ": No such file or directory\n", 28);
+
+	errno = 1;
 }
