@@ -21,6 +21,7 @@ void prompt(int mode, char **line)
 	}
 }
 
+
 /**
  * string_to_array - splits string
  * @s: array of string character.
@@ -29,61 +30,93 @@ void prompt(int mode, char **line)
 */
 char **string_to_array(char *s, char *sep)
 {
-	int i = 0;
-	char **arr, *token;
+	int i = 0, j = 0, k = 0, elem = 0;
+	char **arr = NULL, *token = NULL, *ptr = NULL, *ptr_cpy, ch;
 
-	/** Create Dynamic array */
 	arr = malloc(30 * sizeof(char *));
-	if (arr == NULL)
-		return (NULL);
 
-	/** Get Token and use for loop to extract the rest. */
-	token = _strtok(s, sep);
-	while (token != NULL)
+	token = strtok(s, sep);
+	for (i = 0; token != NULL; token = strtok(NULL, sep), i++)
 	{
-		arr[i] = token;
-		token = _strtok(NULL, sep);
-		i++;
+		ptr = token;
+		if (update_arr_tok(arr, token, i) == 1)
+			continue;
+		ptr_cpy = ptr;
+		for (j = 0; *ptr; j++, ptr++)
+		{
+			ch = check_ptr(*ptr, *(ptr + 1));
+			if (ch != '0' && j == 0)
+			{
+				*(ptr + 1) = '\0';
+				ptr += 2;
+				ptr_cpy = ptr;
+				update_arr(arr, ch, i);
+				i++;
+			}
+			else if (ch != '0'  && j > 0 && elem == 1)
+			{
+				*ptr = '\0';
+				arr[i] = ptr_cpy;
+				ptr_cpy = ptr + 2;
+				update_arr(arr, ch, i + 1);
+				ptr = ptr_cpy;
+				elem = 0;
+				i += 2;
+			}
+			else
+				elem = 1;
+		}
+		arr[i] = ptr_cpy;
 	}
 	arr[i] = NULL;
-
 	return (arr);
 }
 
 /**
- * get_path_loc - Gets path location.
- * @path: Name of path.
- * @cmd: command to find.
- * Return: path location.
+ * update_arr_tok - Updates the array with the token
+ * @arr: array
+ * @token: token
+ * @i: index
+ * Return: 1 if updated, 0 if not.
 */
-char *get_path_loc(char *path, char *cmd)
+int update_arr_tok(char **arr, char *token, int i)
 {
-	char *paths, **dir, *token, *command;
-	struct stat st;
-
-	dir = _getenv(path);
-	if (!dir)
-		return (NULL);
-
-	paths = _strdup(*dir);
-	token = _strtok(paths, ":");
-	for (; token != NULL; token = _strtok(NULL, ":"))
+	if (!strcmp(token, "||") || !strcmp(token, "&&"))
 	{
-		command = malloc(_strlen(cmd) + _strlen(token) + 2);
-		if (!command)
-			return (NULL);
-
-		_strcpy(command, token);
-		_strcat(command, "/");
-		_strcat(command, cmd);
-
-		if (stat(command, &st) == 0)
-		{
-			free(paths);
-			return (command);
-		}
-		free(command);
+		arr[i] = token;
+		return (1);
 	}
-	free(paths);
-	return (NULL);
+	return (0);
+}
+
+/**
+ * update_arr - Updates the array with the string of char
+ * @arr: array
+ * @ch: character
+ * @i: index
+*/
+void update_arr(char **arr, char ch, int i)
+{
+	if (ch == '|')
+		arr[i] = "||";
+	else
+		arr[i] = "&&";
+}
+
+/**
+ * check_ptr - Checks characters if they are equal
+ * @ch: character ch
+ * @sh: character sh
+ * Return: character if matches | or & else return 0.
+*/
+char check_ptr(char ch, char sh)
+{
+	if (ch == sh)
+	{
+		if (ch == '|')
+			return ('|');
+		if (ch == '&')
+			return ('&');
+	}
+	return ('0');
 }

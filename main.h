@@ -37,11 +37,17 @@ typedef struct arraysub
 /** essentials.c */
 void prompt(int mode, char **line);
 char **string_to_array(char *s, char *sep);
-char *get_path_loc(char *path, char *name);
+char check_ptr(char ch, char sh);
+void update_arr(char **arr, char ch, int i);
+int update_arr_tok(char **arr, char *token, int i);
 
 /** execute.c */
 int _exec(char **grid, char **argv, char *cmd);
 void prepare_exec (char **grid, char **argv, int cnt);
+void prepare_subgrid(char **grid, char **line_grid, int cnt, char **argv);
+
+/** get_path_loc.c */
+char *get_path_loc(char *path, char *cmd);
 
 /** environ.c */
 char **_copyenviron(void);

@@ -4,6 +4,7 @@
  * _setenv - sets an env
  * @grid: array of commands
  * @cnt: count
+ * @lg: line grid
  * Return: Always 0 if successful and -1 if not.
 */
 int _setenv(char **grid, int cnt, char **lg)
@@ -47,6 +48,7 @@ int _setenv(char **grid, int cnt, char **lg)
  * _unsetenv - Unsets an env
  * @grid: Grid of values
  * @cnt: Number of times program has been executed.
+ * @lg: line grid
  * Return: Always 0.
 */
 int _unsetenv(char **grid, int cnt, char **lg)

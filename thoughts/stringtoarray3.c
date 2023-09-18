@@ -8,9 +8,13 @@ char *_strdup(char *s);
 void free_grid(char **grid);
 char check_ptr(char ch, char sh);
 void update_arr(char **arr, char ch, int i);
-int update_arr_tok (char **arr, char *token, int i);
+int update_arr_tok(char **arr, char *token, int i);
 
-int main (void)
+/**
+ * main - Main function
+ * Return: Always 0.
+*/
+int main(void)
 {
 	char input[] = "ls /var || ls /var||&ls";
 	char **grid;
@@ -37,8 +41,10 @@ char **string_to_array(char *s, char *sep)
 	int i = 0, j = 0, k = 0, elem = 0;
 	char **arr = NULL, *token = NULL, *ptr = NULL, *ptr_cpy, ch;
 
-	if ((arr = malloc(30 * sizeof(char *))) == NULL)
+	arr = malloc(30 * sizeof(char *));
+	if (arr == NULL)
 		return (NULL);
+
 	token = strtok(s, sep);
 	for (i = 0; token != NULL; token = strtok(NULL, sep), i++)
 	{
@@ -48,7 +54,8 @@ char **string_to_array(char *s, char *sep)
 		ptr_cpy = ptr;
 		for (j = 0; *ptr; j++, ptr++)
 		{
-			if ((ch = check_ptr(*ptr, *(ptr + 1))) != '0' && j == 0)
+			ch = check_ptr(*ptr, *(ptr + 1));
+			if (ch != '0' && j == 0)
 			{
 				*(ptr + 1) = '\0';
 				ptr += 2;
@@ -56,7 +63,7 @@ char **string_to_array(char *s, char *sep)
 				update_arr(arr, ch, i);
 				i++;
 			}
-			else if ((ch = check_ptr(*ptr, *(ptr + 1))) != '0'  && j > 0 && elem == 1)
+			else if (ch != '0'  && j > 0 && elem == 1)
 			{
 				*ptr = '\0';
 				arr[i] = ptr_cpy;
@@ -75,7 +82,14 @@ char **string_to_array(char *s, char *sep)
 	return (arr);
 }
 
-int update_arr_tok (char **arr, char *token, int i)
+/**
+ * update_arr_tok - Updates the array with the token
+ * @arr: array
+ * @token: token
+ * @i: index
+ * Return: 1 if updated, 0 if not.
+*/
+int update_arr_tok(char **arr, char *token, int i)
 {
 	if (!strcmp(token, "||") || !strcmp(token, "&&"))
 	{
@@ -84,6 +98,13 @@ int update_arr_tok (char **arr, char *token, int i)
 	}
 	return (0);
 }
+
+/**
+ * update_arr - Updates the array with the string of char
+ * @arr: array
+ * @ch: character
+ * @i: index
+*/
 void update_arr(char **arr, char ch, int i)
 {
 	if (ch == '|')
@@ -92,6 +113,12 @@ void update_arr(char **arr, char ch, int i)
 		arr[i] = "&&";
 }
 
+/**
+ * check_ptr - Checks characters if they are equal
+ * @ch: character ch
+ * @sh: character sh
+ * Return: character if matches | or & else return 0.
+*/
 char check_ptr(char ch, char sh)
 {
 	if (ch == sh)
@@ -142,3 +169,33 @@ void free_grid(char **grid)
 	}
 	free(grid);
 }
+
+/**
+ * string_to_array - splits string
+ * @s: array of string character.
+ * @sep: seperator.
+ * Return: an array of each word of the string.
+*/
+char **string_to_array(char *s, char *sep)
+{
+	int i = 0;
+	char **arr, *token;
+
+	/** Create Dynamic array */
+	arr = malloc(30 * sizeof(char *));
+	if (arr == NULL)
+		return (NULL);
+
+	/** Get Token and use for loop to extract the rest. */
+	token = _strtok(s, sep);
+	while (token != NULL)
+	{
+		arr[i] = token;
+		token = _strtok(NULL, sep);
+		i++;
+	}
+	arr[i] = NULL;
+
+	return (arr);
+}
+

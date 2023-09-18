@@ -1,5 +1,11 @@
 #include "main.h"
 
+/**
+ * getSubArray - Gets sub array
+ * @arr: array
+ * @i: index
+ * Return: A struct type of sub array.
+*/
 arraysub_t getSubArray(char **arr, int i)
 {
 	arraysub_t ret;
@@ -33,6 +39,10 @@ arraysub_t getSubArray(char **arr, int i)
 	return (ret);
 }
 
+/**
+ * freeSubArray - Frees sub array.
+ * @subArr: sub array.
+*/
 void freeSubArray(arraysub_t subArr)
 {
 	int i = 0;

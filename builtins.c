@@ -118,31 +118,29 @@ void _updatedir(char *mode, char *cur)
 */
 int _chdir(char **grid, __attribute__((unused)) int cnt, char **lg)
 {
-	char **home = NULL, dir[255], *str;
-	char **oldpwd = _getenv("OLDPWD"), **pwd = _getenv("PWD");
+	char **hm, dir[255], *str, **opwd = _getenv("OLDPWD"), **pwd = _getenv("PWD");
 
 	(void)lg;
 	if (grid[1] == NULL || _strcmp(grid[1], "~") == 0)
 	{
 		getcwd(dir, 255);
-		home = _getenv("HOME");
-		if (!home)
+		hm = _getenv("HOME");
+		if (!hm)
 			return (0);
 		_updatedir("OLDPWD=", dir);
-		chdir(*home + 5);
+		chdir(*hm + 5);
 		_updatedir("PWD=", NULL);
 	}
 	else if (_strcmp(grid[1], "-") == 0)
 	{
 		getcwd(dir, 255);
 		free(*pwd);
-		*pwd = _strdup(*oldpwd + 3);
-		free(*oldpwd);
+		*pwd = _strdup(*opwd + 3);
+		free(*opwd);
 		str = malloc((_strlen(dir) + 7));
 		_strcpy(str, "OLDPWD=");
 		_strcat(str, dir);
-		*oldpwd = str;
-
+		*opwd = str;
 		chdir(*pwd + 4);
 	}
 	else
