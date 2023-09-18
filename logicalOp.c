@@ -54,3 +54,33 @@ void freeSubArray(arraysub_t subArr)
 	}
 	free(subArr.subarr);
 }
+
+/**
+ * string_to_arr - splits string
+ * @s: array of string character.
+ * @sep: seperator.
+ * Return: an array of each word of the string.
+*/
+char **string_to_arr(char *s, char *sep)
+{
+	int i = 0;
+	char **arr, *token;
+
+	/** Create Dynamic array */
+	arr = malloc(30 * sizeof(char *));
+	if (arr == NULL)
+		return (NULL);
+
+	/** Get Token and use for loop to extract the rest. */
+	token = _strtok(s, sep);
+	while (token != NULL)
+	{
+		arr[i] = token;
+		token = _strtok(NULL, sep);
+		i++;
+	}
+	arr[i] = NULL;
+
+	return (arr);
+}
+

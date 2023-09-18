@@ -30,11 +30,10 @@ void prompt(int mode, char **line)
 */
 char **string_to_array(char *s, char *sep)
 {
-	int i = 0, j = 0, k = 0, elem = 0;
+	int i = 0, j = 0, elem = 0;
 	char **arr = NULL, *token = NULL, *ptr = NULL, *ptr_cpy, ch;
 
 	arr = malloc(30 * sizeof(char *));
-
 	token = strtok(s, sep);
 	for (i = 0; token != NULL; token = strtok(NULL, sep), i++)
 	{

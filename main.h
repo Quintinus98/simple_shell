@@ -104,5 +104,6 @@ void cdError(char *cmd);
 /** logicalOp.c */
 arraysub_t getSubArray(char **arr, int i);
 void freeSubArray(arraysub_t subArr);
+char **string_to_arr(char *s, char *sep);
 
 #endif
