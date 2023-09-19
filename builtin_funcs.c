@@ -7,12 +7,12 @@
  * @lg: line grid
  * Return: Always 0 if successful and -1 if not.
 */
-int _setenv(char **grid, int cnt, char **lg)
+int _setenv(char **grid, int cnt, alias_t **ls)
 {
 	char *env, **val_from_name = NULL, *name = grid[1], *value = grid[2];
 
 	(void)cnt;
-	(void)lg;
+	(void)ls;
 	if (!name || _strchr(name, '=') || !value)
 	{
 		errno = EINVAL;
@@ -51,13 +51,13 @@ int _setenv(char **grid, int cnt, char **lg)
  * @lg: line grid
  * Return: Always 0.
 */
-int _unsetenv(char **grid, int cnt, char **lg)
+int _unsetenv(char **grid, int cnt, alias_t **ls)
 {
 	char **env = environ, **new_environ, *name = grid[1], **temp;
 	int len = _strlen(name), i, j;
 
 	(void)cnt;
-	(void)lg;
+	(void)ls;
 	/** Check if name = null, string name does not contain = */
 	for (i = 0; environ[i]; i++)
 		;

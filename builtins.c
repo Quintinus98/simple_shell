@@ -5,13 +5,14 @@
  * @s: string to compare.
  * Return: Always 0.
 */
-int (*builtins(char *s))(char **grid, int cnt, char **lg)
+int (*builtins(char *s))(char **grid, int cnt, alias_t **ls)
 {
 	builtin_t sys[] = {
 		{"env", _printenv},
 		{"setenv", _setenv},
 		{"unsetenv", _unsetenv},
 		{"cd", _chdir},
+		{"alias", _alias},
 		{NULL, NULL}
 	};
 	int i = 0;
@@ -62,13 +63,13 @@ int _exitshell(char **grid, int cnt, char **lg, arraysub_t subgrid)
  * @lg: line grid - Multi line grid.
  * Return: Always 0.
 */
-int _printenv(char **grid, int cnt, char **lg)
+int _printenv(char **grid, int cnt, alias_t **ls)
 {
 	int i;
 	char newline = '\n';
 
 	(void)grid;
-	(void)lg;
+	(void)ls;
 	(void)cnt;
 	if (!environ)
 		return (-1);
@@ -116,11 +117,11 @@ void _updatedir(char *mode, char *cur)
  * @lg: line grid - Multi line grid.
  * Return: On success zero (0).
 */
-int _chdir(char **grid, __attribute__((unused)) int cnt, char **lg)
+int _chdir(char **grid, __attribute__((unused)) int cnt, alias_t **ls)
 {
 	char **hm, dir[255], *str, **opwd = _getenv("OLDPWD"), **pwd = _getenv("PWD");
 
-	(void)lg;
+	(void)ls;
 	if (grid[1] == NULL || _strcmp(grid[1], "~") == 0)
 	{
 		getcwd(dir, 255);

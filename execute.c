@@ -78,27 +78,27 @@ void prepare_exec(char **grid, char **argv, int cnt)
 /**
  * prepare_subgrid - Prepares subgrid
  * @grid: grid
- * @line_grid: Line grid
+ * @lg: Line grid
  * @cnt: count
  * @argv: list argument
 */
-void prepare_subgrid(char **grid, char **line_grid, int cnt, char **argv)
+void prepare_subgrid(char **grid, char **lg, int cnt, char **av, alias_t **ls)
 {
 	arraysub_t subgrid;
 	int pos;
-	int (*builtin)(char **grid, int cnt, char **lg);
+	int (*builtin)(char **grid, int cnt, alias_t **ls);
 
 	subgrid = getSubArray(grid, 0);
 	while (subgrid.subarr)
 	{
 		if (_strcmp(subgrid.subarr[0], "exit") == 0)
-			_exitshell(grid, cnt, line_grid, subgrid);
+			_exitshell(grid, cnt, lg, subgrid);
 
 		builtin = builtins(grid[0]);
 		if (builtin)
-			builtin(subgrid.subarr, cnt, line_grid);
+			builtin(subgrid.subarr, cnt, ls);
 		else
-			prepare_exec(subgrid.subarr, argv, cnt);
+			prepare_exec(subgrid.subarr, av, cnt);
 
 		if (subgrid.logOp != NULL)
 		{

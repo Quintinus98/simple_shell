@@ -11,6 +11,7 @@ int main(__attribute__((unused)) int argc, char **argv)
 	char line[BUFSIZ], *dynline = NULL, **grid;
 	int mode = isatty(STDIN_FILENO), cnt = 0, i = 0;
 	char **line_grid, *line_sep = ";", *sep = " \n";
+	alias_t *aliasList = NULL;
 
 	errno = 0;
 	environ = _copyenviron();
@@ -33,7 +34,7 @@ int main(__attribute__((unused)) int argc, char **argv)
 				continue;
 			}
 
-			prepare_subgrid(grid, line_grid, cnt, argv);
+			prepare_subgrid(grid, line_grid, cnt, argv, &aliasList);
 
 			free(grid);
 		}

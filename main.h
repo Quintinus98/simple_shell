@@ -13,10 +13,23 @@
 
 /** Other important declarations*/
 extern char **environ;
+/**
+ * struct alias - singly linked list
+ * @nameVal: name value pair of alias.
+ * @next: points to the next node
+ *
+ * Description: singly linked list node structure
+ */
+typedef struct alias
+{
+	char *nameVal;
+	struct alias *next;
+} alias_t;
+
 typedef struct builtin
 {
 	char *builtin;
-	int (*f)(char **grid, int cnt, char **lg);
+	int (*f)(char **grid, int cnt, alias_t **ls);
 } builtin_t;
 
 typedef struct env_list
@@ -32,6 +45,8 @@ typedef struct arraysub
 	int pos;
 } arraysub_t;
 
+
+
 #define MAX_ELEM 10
 
 /** essentials.c */
@@ -44,7 +59,7 @@ int update_arr_tok(char **arr, char *token, int i);
 /** execute.c */
 int _exec(char **grid, char **argv, char *cmd);
 void prepare_exec (char **grid, char **argv, int cnt);
-void prepare_subgrid(char **grid, char **line_grid, int cnt, char **argv);
+void prepare_subgrid(char **grid, char **lg, int cnt, char **av, alias_t **ls);
 
 /** get_path_loc.c */
 char *get_path_loc(char *path, char *cmd);
@@ -78,15 +93,15 @@ int _atoi(char *s);
 int ilen(int n);
 
 /** builtins.c */
-int (*builtins(char *s))(char **grid, int cnt, char **lg);
-int _exitshell(char **grid, int cnt, char **lg, arraysub_t subgrid);
-int _printenv(char **grid, int cnt, char **lg);
-int _chdir(char **grid, int cnt, char **lg);
+int (*builtins(char *s))(char **grid, int cnt, alias_t **ls);
+int _printenv(char **grid, int cnt, alias_t **ls);
+int _chdir(char **grid, int cnt, alias_t **ls);
 void _updatedir(char *mode, char *cur);
+int _exitshell(char **grid, int cnt, char **lg, arraysub_t subgrid);
 
 /** builtin_funcs.c*/
-int _unsetenv(char **grid, int cnt, char **lg);
-int _setenv(char **grid, int cnt, char **lg);
+int _unsetenv(char **grid, int cnt, alias_t **lg);
+int _setenv(char **grid, int cnt, alias_t **lg);
 
 
 /** getline.c */
@@ -108,5 +123,11 @@ char **string_to_arr(char *s, char *sep);
 
 /** comments.c */
 void comments(char *buf);
+
+/** alias.c */
+int _alias(char **arr, int cnt, alias_t **aliasList);
+void store_alias(char **arr, alias_t **head);
+void print_alias(char **arr, const alias_t *h);
+alias_t *add_node_end(alias_t **head, const char *str);
 
 #endif
