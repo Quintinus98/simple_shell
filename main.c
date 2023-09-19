@@ -20,6 +20,7 @@ int main(__attribute__((unused)) int argc, char **argv)
 		_strcpy(line, dynline);
 		free(dynline);
 
+		comments(line);
 		line_grid = string_to_arr(line, line_sep);
 		for (i = 0; line_grid[i]; i++)
 		{

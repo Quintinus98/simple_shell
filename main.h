@@ -106,4 +106,7 @@ arraysub_t getSubArray(char **arr, int i);
 void freeSubArray(arraysub_t subArr);
 char **string_to_arr(char *s, char *sep);
 
+/** comments.c */
+void comments(char *buf);
+
 #endif

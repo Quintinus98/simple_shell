@@ -34,8 +34,8 @@ char **string_to_array(char *s, char *sep)
 	char **arr = NULL, *token = NULL, *ptr = NULL, *ptr_cpy, ch;
 
 	arr = malloc(30 * sizeof(char *));
-	token = strtok(s, sep);
-	for (i = 0; token != NULL; token = strtok(NULL, sep), i++)
+	token = _strtok(s, sep);
+	for (i = 0; token != NULL; token = _strtok(NULL, sep), i++)
 	{
 		ptr = token;
 		if (update_arr_tok(arr, token, i) == 1)
@@ -80,7 +80,7 @@ char **string_to_array(char *s, char *sep)
 */
 int update_arr_tok(char **arr, char *token, int i)
 {
-	if (!strcmp(token, "||") || !strcmp(token, "&&"))
+	if (!_strcmp(token, "||") || !_strcmp(token, "&&"))
 	{
 		arr[i] = token;
 		return (1);
