@@ -14,7 +14,7 @@ void prompt(int mode, char **line)
 
 	if (mode == 1)
 		write(1, "$ ", 2);
-	linelen = _getline(line, &linecap, stdin);
+	linelen = getline(line, &linecap, stdin);
 	if (linelen == -1)
 	{
 		exit(errno);
