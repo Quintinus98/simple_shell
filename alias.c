@@ -10,13 +10,21 @@
 */
 int _alias(char **arr, int cnt, alias_t **aliasList)
 {
+	int i = 1;
+
 	(void)cnt;
 	if (arr[1] == NULL)
 		print_alias(arr, *aliasList);
-	else if (strchr(arr[1], '='))
-		store_alias(arr, aliasList);
 	else
-		print_alias(arr, *aliasList);
+	{
+		for (; arr[i] != NULL; i++)
+		{
+			if (strchr(arr[i], '='))
+				store_alias(arr[i], aliasList);
+			else if (!strchr(arr[i], '='))
+				print_sp_alias(arr[i], *aliasList);
+		}
+	}
 
 	return (0);
 }
@@ -26,39 +34,35 @@ int _alias(char **arr, int cnt, alias_t **aliasList)
  * @arr: Array
  * @head: head pointer to struct alias_t
 */
-void store_alias(char **arr, alias_t **head)
+void store_alias(char *str, alias_t **head)
 {
-	int i, j = 0, status = 0;
+	int j = 0, status = 0;
 	alias_t *tmp;
 
-
-	for (i = 1; arr[i] ; i++)
+	tmp = *head;
+	j = 0;
+	while (str[j] != '=')
+		j++;
+	while (tmp != NULL)
 	{
-		tmp = *head;
-		j = 0;
-		while (arr[i][j] != '=')
-			j++;
-		while (tmp != NULL)
+		if (_strncmp(tmp->nameVal, str, j + 1) == 0)
 		{
-			if (_strncmp(tmp->nameVal, arr[i], j + 1) == 0)
-			{
-				free(tmp->nameVal);
-				free(tmp->val);
-				tmp->val = _strdup(arr[i] + 5);
-				tmp->nameVal = malloc(255);
-				_strcpy(tmp->nameVal, tmp->name);
-				_strcat(tmp->nameVal, "='");
-				_strcat(tmp->nameVal, arr[i] + 5);
-				_strcat(tmp->nameVal, "'");
-				status = 1;
-			}
-			tmp = tmp->next;
+			free(tmp->nameVal);
+			free(tmp->val);
+			tmp->val = _strdup(str + (j + 1));
+			tmp->nameVal = malloc(255);
+			_strcpy(tmp->nameVal, tmp->name);
+			_strcat(tmp->nameVal, "='");
+			_strcat(tmp->nameVal, str + (j + 1));
+			_strcat(tmp->nameVal, "'");
+			status = 1;
 		}
-		if (status)
-			continue;
-
-		add_node_end(head, arr[i]);
+		tmp = tmp->next;
 	}
+	if (status)
+		return;
+
+	add_node_end(head, str);
 }
 
 /**
@@ -69,7 +73,6 @@ void store_alias(char **arr, alias_t **head)
 void print_alias(char **arr, const alias_t *h)
 {
 	const alias_t *tmp;
-	int i = 0, j = 0;
 
 	/** Print all.*/
 	if (arr[1] == NULL)
@@ -80,28 +83,31 @@ void print_alias(char **arr, const alias_t *h)
 			if (tmp->nameVal == NULL)
 				write(1, "(nil)", 5);
 			else
-				write(1, tmp->nameVal, strlen(tmp->nameVal));
+				write(1, tmp->nameVal, _strlen(tmp->nameVal));
 			write(1, "\n", 1);
 			tmp = tmp->next;
 		}
 		return;
 	}
+}
+
+void print_sp_alias(char *str, const alias_t *h)
+{
+	const alias_t *tmp;
+	int j = 0;
 
 	/** Print specific */
-	for (i = 1; arr[i] ; i++)
+	while (str[j] != '\0')
+		j++;
+	tmp = h;
+	while (tmp != NULL)
 	{
-		while (arr[i][j] != '\0')
-			j++;
-		tmp = h;
-		while (tmp != NULL)
+		if (_strncmp(tmp->nameVal, str, j) == 0)
 		{
-			if (strncmp(tmp->nameVal, arr[i], j) == 0)
-			{
-				write(1, tmp->nameVal, strlen(tmp->nameVal));
-				write(1, "\n", 1);
-			}
-			tmp = tmp->next;
+			write(1, tmp->nameVal, _strlen(tmp->nameVal));
+			write(1, "\n", 1);
 		}
+		tmp = tmp->next;
 	}
 }
 

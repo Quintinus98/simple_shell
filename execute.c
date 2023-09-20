@@ -70,7 +70,7 @@ void prepare_exec(char **grid, char **argv, int cnt, alias_t **ls)
 
 	if (!cmd || (access(cmd, X_OK) == -1))
 	{
-		zerror(argv[0], cnt, cmd);
+		zerror(argv[0], cnt, grid[0]);
 	}
 	else
 	{

@@ -133,8 +133,9 @@ void comments(char *buf);
 
 /** alias.c */
 int _alias(char **arr, int cnt, alias_t **aliasList);
-void store_alias(char **arr, alias_t **head);
+void store_alias(char *str, alias_t **head);
 void print_alias(char **arr, const alias_t *h);
+void print_sp_alias(char *str, const alias_t *h);
 alias_t *add_node_end(alias_t **head, char *str);
 
 #endif
