@@ -67,4 +67,3 @@ char **string_to_arr(char *s, char *sep)
 
 	return (arr);
 }
-

@@ -19,9 +19,9 @@ int _alias(char **arr, int cnt, alias_t **aliasList)
 	{
 		for (; arr[i] != NULL; i++)
 		{
-			if (strchr(arr[i], '='))
+			if (_strchr(arr[i], '='))
 				store_alias(arr[i], aliasList);
-			else if (!strchr(arr[i], '='))
+			else if (!_strchr(arr[i], '='))
 				print_sp_alias(arr[i], *aliasList);
 		}
 	}
