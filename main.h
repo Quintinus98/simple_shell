@@ -15,29 +15,36 @@
 extern char **environ;
 /**
  * struct alias - singly linked list
+ * @name: name of alias
+ * @val: value of alias
  * @nameVal: name value pair of alias.
  * @next: points to the next node
- *
- * Description: singly linked list node structure
  */
 typedef struct alias
 {
+	char *name;
+	char *val;
 	char *nameVal;
 	struct alias *next;
 } alias_t;
 
+/**
+ * struct builtin - builtins
+ * @builtin: a string matching the builtin
+ * @f: function to return
+*/
 typedef struct builtin
 {
 	char *builtin;
 	int (*f)(char **grid, int cnt, alias_t **ls);
 } builtin_t;
 
-typedef struct env_list
-{
-	char *env_str;
-	struct env_list *next;
-} env_t;
-
+/**
+ * struct arraysub - sub arrays
+ * @subarr: sub array
+ * @logOp: logical Operator
+ * @pos: position
+*/
 typedef struct arraysub
 {
 	char **subarr;
@@ -58,7 +65,7 @@ int update_arr_tok(char **arr, char *token, int i);
 
 /** execute.c */
 int _exec(char **grid, char **argv, char *cmd);
-void prepare_exec (char **grid, char **argv, int cnt);
+void prepare_exec(char **grid, char **argv, int cnt, alias_t **ls);
 void prepare_subgrid(char **grid, char **lg, int cnt, char **av, alias_t **ls);
 
 /** get_path_loc.c */
@@ -128,6 +135,6 @@ void comments(char *buf);
 int _alias(char **arr, int cnt, alias_t **aliasList);
 void store_alias(char **arr, alias_t **head);
 void print_alias(char **arr, const alias_t *h);
-alias_t *add_node_end(alias_t **head, const char *str);
+alias_t *add_node_end(alias_t **head, char *str);
 
 #endif

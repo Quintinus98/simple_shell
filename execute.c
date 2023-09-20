@@ -42,15 +42,20 @@ int _exec(char **grid, char **argv, char *cmd)
  * @grid: dynamically allocated array
  * @argv: list of command arguments
  * @cnt: count of iterations.
+ * @ls: alias list
  * Return: Always 0
 */
-void prepare_exec(char **grid, char **argv, int cnt)
+void prepare_exec(char **grid, char **argv, int cnt, alias_t **ls)
 {
 	char *cmd = NULL;
 	int flag = 0;
-
+	alias_t *tmp = *ls;
 
 	cmd = grid[0];
+	for (; tmp != NULL; tmp = tmp->next)
+		if (!_strcmp(tmp->name, cmd))
+			cmd = tmp->val;
+
 	if (access(cmd, X_OK) == 0 && _strcmp(cmd, "hbtn_ls") == 0 && grid[1])
 	{
 		_exec(grid, argv, cmd);
@@ -60,12 +65,12 @@ void prepare_exec(char **grid, char **argv, int cnt)
 	if (cmd[0] != '/' && cmd[0] != '.')
 	{
 		flag = 1;
-		cmd = get_path_loc("PATH", grid[0]);
+		cmd = get_path_loc("PATH", cmd);
 	}
 
 	if (!cmd || (access(cmd, X_OK) == -1))
 	{
-		zerror(argv[0], cnt, grid[0]);
+		zerror(argv[0], cnt, cmd);
 	}
 	else
 	{
@@ -80,7 +85,8 @@ void prepare_exec(char **grid, char **argv, int cnt)
  * @grid: grid
  * @lg: Line grid
  * @cnt: count
- * @argv: list argument
+ * @av: list argument
+ * @ls: alias list
 */
 void prepare_subgrid(char **grid, char **lg, int cnt, char **av, alias_t **ls)
 {
@@ -98,7 +104,7 @@ void prepare_subgrid(char **grid, char **lg, int cnt, char **av, alias_t **ls)
 		if (builtin)
 			builtin(subgrid.subarr, cnt, ls);
 		else
-			prepare_exec(subgrid.subarr, av, cnt);
+			prepare_exec(subgrid.subarr, av, cnt, ls);
 
 		if (subgrid.logOp != NULL)
 		{

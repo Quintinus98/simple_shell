@@ -3,11 +3,7 @@
 #include <unistd.h>
 #include <string.h>
 
-typedef struct alias
-{
-	char *nameVal;
-	struct alias *next;
-} alias_t;
+
 // extern char **environ;
 
 // typedef struct env_list
@@ -127,6 +123,14 @@ typedef struct alias
 // 	/** Always remember to free str. */
 // 	return (str);
 // }
+typedef struct alias
+{
+	char *name;
+	char *val;
+	char *nameVal;
+	struct alias *next;
+} alias_t;
+
 int _alias(char **arr, int cnt, alias_t **aliasList);
 void store_alias(char **arr, alias_t **head);
 void print_alias(char **arr, const alias_t *h);
@@ -179,7 +183,6 @@ void store_alias(char **arr, alias_t **head)
 	int i, j = 0, status = 0;
 	alias_t *tmp;
 
-
 	for (i = 1; arr[i] ; i++)
 	{
 		tmp = *head;
@@ -190,7 +193,14 @@ void store_alias(char **arr, alias_t **head)
 		{
 			if (strncmp(tmp->nameVal, arr[i], j + 1) == 0)
 			{
-				tmp->nameVal = arr[i];
+				free(tmp->nameVal);
+				free(tmp->val);
+				tmp->val = strdup(arr[i] + 5);
+				tmp->nameVal = malloc(255);
+				strcpy(tmp->nameVal, tmp->name);
+				strcat(tmp->nameVal, "='");
+				strcat(tmp->nameVal, arr[i] + 5);
+				strcat(tmp->nameVal, "'");
 				status = 1;
 			}
 			tmp = tmp->next;
@@ -201,7 +211,13 @@ void store_alias(char **arr, alias_t **head)
 		add_node_end(head, arr[i]);
 	}
 }
-
+/**
+ * name=david
+ * name=peter
+ * name
+ * value - needs update
+ * 
+*/
 /**
  * print_alias - prints alias
  * @arr: Array
@@ -256,13 +272,26 @@ alias_t *add_node_end(alias_t **head, const char *str)
 {
 	alias_t *newNode = malloc(sizeof(alias_t));
 	alias_t *lastNode = *head;
-	unsigned int len = 0;
+	unsigned int len = 0, i = 0;
 
 	while (str && str[len])
 		len++;
 	if (!newNode)
 		return (NULL);
-	newNode->nameVal = strdup(str);
+
+	newNode->name = malloc(255);
+	for (; str[i] != '\0'; i++)
+	{
+		if (str[i] == '=')
+			break;
+		newNode->name[i] = str[i];
+	}
+	newNode->val = strdup(str + (i + 1));
+	newNode->nameVal = malloc(255);
+	strcpy(newNode->nameVal, newNode->name);
+	strcat(newNode->nameVal, "='");
+	strcat(newNode->nameVal, str + (i + 1));
+	strcat(newNode->nameVal, "'");
 	newNode->next = NULL;
 
 	if (*head == NULL)

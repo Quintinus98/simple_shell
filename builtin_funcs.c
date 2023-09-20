@@ -4,7 +4,7 @@
  * _setenv - sets an env
  * @grid: array of commands
  * @cnt: count
- * @lg: line grid
+ * @ls: alias list
  * Return: Always 0 if successful and -1 if not.
 */
 int _setenv(char **grid, int cnt, alias_t **ls)
@@ -43,12 +43,11 @@ int _setenv(char **grid, int cnt, alias_t **ls)
 }
 
 
-
 /**
  * _unsetenv - Unsets an env
  * @grid: Grid of values
  * @cnt: Number of times program has been executed.
- * @lg: line grid
+ * @ls: alias list
  * Return: Always 0.
 */
 int _unsetenv(char **grid, int cnt, alias_t **ls)

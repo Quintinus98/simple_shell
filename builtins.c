@@ -60,7 +60,7 @@ int _exitshell(char **grid, int cnt, char **lg, arraysub_t subgrid)
  * _printenv - prints env.
  * @grid: list of arguments
  * @cnt: count of program run.
- * @lg: line grid - Multi line grid.
+ * @ls: alias list
  * Return: Always 0.
 */
 int _printenv(char **grid, int cnt, alias_t **ls)
@@ -114,7 +114,7 @@ void _updatedir(char *mode, char *cur)
  * _chdir - Changes directory
  * @grid: list of arguments
  * @cnt: count of program run.
- * @lg: line grid - Multi line grid.
+ * @ls: alias list
  * Return: On success zero (0).
 */
 int _chdir(char **grid, __attribute__((unused)) int cnt, alias_t **ls)

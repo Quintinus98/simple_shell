@@ -4,7 +4,9 @@
 /**
  * _alias - prints alias
  * @arr: Array
+ * @cnt: count
  * @aliasList: Alias list
+ * Return: 0
 */
 int _alias(char **arr, int cnt, alias_t **aliasList)
 {
@@ -38,10 +40,16 @@ void store_alias(char **arr, alias_t **head)
 			j++;
 		while (tmp != NULL)
 		{
-			if (strncmp(tmp->nameVal, arr[i], j + 1) == 0)
+			if (_strncmp(tmp->nameVal, arr[i], j + 1) == 0)
 			{
 				free(tmp->nameVal);
-				tmp->nameVal = _strdup(arr[i]);
+				free(tmp->val);
+				tmp->val = _strdup(arr[i] + 5);
+				tmp->nameVal = malloc(255);
+				_strcpy(tmp->nameVal, tmp->name);
+				_strcat(tmp->nameVal, "='");
+				_strcat(tmp->nameVal, arr[i] + 5);
+				_strcat(tmp->nameVal, "'");
 				status = 1;
 			}
 			tmp = tmp->next;
@@ -103,17 +111,30 @@ void print_alias(char **arr, const alias_t *h)
  * @str: New string to be added.
  * Return: the address of the new element, or NULL if it failed.
 */
-alias_t *add_node_end(alias_t **head, const char *str)
+alias_t *add_node_end(alias_t **head, char *str)
 {
 	alias_t *newNode = malloc(sizeof(alias_t));
 	alias_t *lastNode = *head;
-	unsigned int len = 0;
+	unsigned int len = 0, i = 0;
 
 	while (str && str[len])
 		len++;
 	if (!newNode)
 		return (NULL);
-	newNode->nameVal = strdup(str);
+
+	newNode->name = malloc(255);
+	for (; str[i] != '\0'; i++)
+	{
+		if (str[i] == '=')
+			break;
+		newNode->name[i] = str[i];
+	}
+	newNode->val = _strdup(str + (i + 1));
+	newNode->nameVal = malloc(255);
+	_strcpy(newNode->nameVal, newNode->name);
+	_strcat(newNode->nameVal, "='");
+	_strcat(newNode->nameVal, str + (i + 1));
+	_strcat(newNode->nameVal, "'");
 	newNode->next = NULL;
 
 	if (*head == NULL)
