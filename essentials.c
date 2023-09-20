@@ -10,7 +10,7 @@
 void prompt(int mode, char **line)
 {
 	size_t linecap = 0;
-	ssize_t linelen;
+	int linelen = 0;
 
 	if (mode == 1)
 		write(1, "$ ", 2);

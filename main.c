@@ -8,9 +8,9 @@
 */
 int main(__attribute__((unused)) int argc, char **argv)
 {
-	char line[BUFSIZ], *dynline = NULL, **grid;
+	char line[BUFSIZ], *dynline = NULL, **grid = NULL;
 	int mode = isatty(STDIN_FILENO), cnt = 0, i = 0;
-	char **line_grid, *line_sep = ";", *sep = " \n";
+	char **line_grid = NULL, *line_sep = ";", *sep = " \n";
 	alias_t *aliasList = NULL;
 
 	errno = 0;
