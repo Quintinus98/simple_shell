@@ -1,22 +1,5 @@
 #include "main.h"
 
-/**
- * free_grid - prints a grid of integers
- * @grid: grid
- *
- * Return: Nothing.
- */
-void free_grid(char **grid)
-{
-	int h;
-
-	for (h = 0; grid[h] != NULL; h++)
-	{
-		free(grid[h]);
-	}
-	free(grid);
-}
-
 
 /**
  * _strlen - length of string

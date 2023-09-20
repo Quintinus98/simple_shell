@@ -40,22 +40,6 @@ arraysub_t getSubArray(char **arr, int i)
 }
 
 /**
- * freeSubArray - Frees sub array.
- * @subArr: sub array.
-*/
-void freeSubArray(arraysub_t subArr)
-{
-	int i = 0;
-
-	while (subArr.subarr[i])
-	{
-		free(subArr.subarr[i]);
-		i++;
-	}
-	free(subArr.subarr);
-}
-
-/**
  * string_to_arr - splits string
  * @s: array of string character.
  * @sep: seperator.

@@ -98,7 +98,7 @@ void prepare_subgrid(char **grid, char **lg, int cnt, char **av, alias_t **ls)
 	while (subgrid.subarr)
 	{
 		if (_strcmp(subgrid.subarr[0], "exit") == 0)
-			_exitshell(grid, cnt, lg, subgrid);
+			_exitshell(grid, cnt, lg, subgrid, ls);
 
 		builtin = builtins(grid[0]);
 		if (builtin)

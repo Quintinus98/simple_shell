@@ -77,7 +77,6 @@ char **_getenv(char *name);
 int _putenv(char *env);
 
 /** aux_funcs1.c */
-void free_grid(char **grid);
 int _strlen(char *str);
 int _strcmp(char *s1, char *s2);
 char *_strdup(char *s);
@@ -104,7 +103,7 @@ int (*builtins(char *s))(char **grid, int cnt, alias_t **ls);
 int _printenv(char **grid, int cnt, alias_t **ls);
 int _chdir(char **grid, int cnt, alias_t **ls);
 void _updatedir(char *mode, char *cur);
-int _exitshell(char **grid, int cnt, char **lg, arraysub_t subgrid);
+int _exitshell(char **grid, int cnt, char **lg, arraysub_t sg, alias_t **h);
 
 /** builtin_funcs.c*/
 int _unsetenv(char **grid, int cnt, alias_t **lg);
@@ -125,7 +124,6 @@ void cdError(char *cmd);
 
 /** logicalOp.c */
 arraysub_t getSubArray(char **arr, int i);
-void freeSubArray(arraysub_t subArr);
 char **string_to_arr(char *s, char *sep);
 
 /** comments.c */
@@ -137,5 +135,11 @@ void store_alias(char *str, alias_t **head);
 void print_alias(char **arr, const alias_t *h);
 void print_sp_alias(char *str, const alias_t *h);
 alias_t *add_node_end(alias_t **head, char *str);
+
+/** free.c */
+void free_alias(alias_t **head);
+void freeSubArray(arraysub_t subArr);
+void free_grid(char **grid);
+
 
 #endif

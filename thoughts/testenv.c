@@ -135,6 +135,7 @@ int _alias(char **arr, int cnt, alias_t **aliasList);
 void store_alias(char **arr, alias_t **head);
 void print_alias(char **arr, const alias_t *h);
 alias_t *add_node_end(alias_t **head, const char *str);
+void free_alias(alias_t **head);
 
 int main(void)
 {
@@ -169,6 +170,7 @@ int _alias(char **arr, int cnt, alias_t **aliasList)
 		store_alias(arr, aliasList);
 	else
 		print_alias(arr, *aliasList);
+	free_alias(aliasList);
 
 	return (0);
 }
@@ -309,3 +311,42 @@ alias_t *add_node_end(alias_t **head, const char *str)
 		return (lastNode);
 	}
 }
+
+/**
+ * free_alias - frees a list_t list.
+ * @head: Beginning of the list.
+ * Return: Nothing.
+*/
+
+void free_alias(alias_t **head)
+{
+	alias_t *nextNode, *currentNode;
+
+	if (head == NULL)
+		return;
+
+	currentNode = *head;
+	while (currentNode)
+	{
+		nextNode = currentNode->next;
+		free(currentNode->name);
+		free(currentNode->nameVal);
+		free(currentNode->val);
+		free(currentNode);
+		currentNode = nextNode;
+	}
+	*head = NULL;
+}
+
+// void free_alias(alias_t *head)
+// {
+// 	alias_t *temp;
+
+// 	while (head != NULL)
+// 	{
+// 		temp = head;
+// 		head = head->next;
+// 		free(temp->str);
+// 		free(temp);
+// 	}
+// }

@@ -35,7 +35,7 @@ int (*builtins(char *s))(char **grid, int cnt, alias_t **ls)
  * @subgrid: sub grid.
  * Return: Always 0.
 */
-int _exitshell(char **grid, int cnt, char **lg, arraysub_t subgrid)
+int _exitshell(char **grid, int cnt, char **lg, arraysub_t sg, alias_t **h)
 {
 	int status = errno;
 
@@ -49,7 +49,8 @@ int _exitshell(char **grid, int cnt, char **lg, arraysub_t subgrid)
 		}
 	}
 
-	freeSubArray(subgrid);
+	freeSubArray(sg);
+	free_alias(h);
 	free(grid);
 	free_grid(environ);
 	free(lg);
