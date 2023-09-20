@@ -32,7 +32,8 @@ int (*builtins(char *s))(char **grid, int cnt, alias_t **ls)
  * @grid: list of arguments
  * @cnt: count of program run.
  * @lg: line grid - Multi line grid.
- * @subgrid: sub grid.
+ * @sg: sub grid.
+ * @h: head alias
  * Return: Always 0.
 */
 int _exitshell(char **grid, int cnt, char **lg, arraysub_t sg, alias_t **h)

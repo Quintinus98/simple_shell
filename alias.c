@@ -31,7 +31,7 @@ int _alias(char **arr, int cnt, alias_t **aliasList)
 
 /**
  * store_alias - stores alias in a linked list.
- * @arr: Array
+ * @str: Array
  * @head: head pointer to struct alias_t
 */
 void store_alias(char *str, alias_t **head)
@@ -91,6 +91,11 @@ void print_alias(char **arr, const alias_t *h)
 	}
 }
 
+/**
+ * print_sp_alias - prints alias
+ * @str: string
+ * @h: head pointer to struct alias_t
+*/
 void print_sp_alias(char *str, const alias_t *h)
 {
 	const alias_t *tmp;
