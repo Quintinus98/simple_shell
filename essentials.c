@@ -14,9 +14,10 @@ void prompt(int mode, char **line)
 
 	if (mode == 1)
 		write(1, "$ ", 2);
-	linelen = getline(line, &linecap, stdin);
+	linelen = _getline(line, &linecap, stdin);
 	if (linelen == -1)
 	{
+		perror("Error");
 		exit(errno);
 	}
 }
