@@ -1,6 +1,6 @@
 # Simple Shell
 
-The idea behind this project, is to implement a shell with basic features.
+The idea behind this project is to implement a shell with basic features.
 
 The project was designed and developed in **C**.
 
@@ -15,7 +15,7 @@ To run the program
 
 The program behaves similarly to ```/bin/sh```.
 
-Some built in functions are defined.
+Some built-in functions are defined.
 - env
 - exit
 
