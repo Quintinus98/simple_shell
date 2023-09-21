@@ -9,14 +9,14 @@ char **_copyenviron(void)
 	char **env;
 	int len = 0, i = 0;
 
-	while (environ[len])
+	while (environ[len] != NULL)
 		len++;
 
 	env = malloc((len + 1) * sizeof(char *));
 	if (!env)
 		return (NULL);
 
-	for (i = 0; environ[i]; i++)
+	for (i = 0; i < len; i++)
 	{
 		env[i] = malloc((_strlen(environ[i]) + 1) * sizeof(char));
 		if (!env[i])

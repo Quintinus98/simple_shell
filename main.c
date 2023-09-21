@@ -14,7 +14,6 @@ int main(__attribute__((unused)) int argc, char **argv)
 	alias_t *aliasList = NULL;
 
 	errno = 0;
-	environ = _copyenviron();
 	while (1 == 1)
 	{
 		prompt(mode, &dynline);
