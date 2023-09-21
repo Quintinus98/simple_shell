@@ -9,21 +9,15 @@
 void zerror(char *prog, int count, char *cmd)
 {
 	char *cmdc = _itoa(count);
-	size_t len = _strlen(prog) + _strlen(cmd) + ilen(count) + 16;
-	char *err_msg = malloc(len * sizeof(char));
 
-	if (!err_msg)
-		return;
-	_strcpy(err_msg, prog);
-	_strcat(err_msg, ": ");
-	_strcat(err_msg, cmdc);
-	_strcat(err_msg, ": ");
-	_strcat(err_msg, cmd);
-	_strcat(err_msg, ": not found\n");
+	write(STDERR_FILENO, prog, _strlen(prog));
+	write(STDERR_FILENO, ": ", 2);
+	write(STDERR_FILENO, cmdc, _strlen(cmdc));
+	write(STDERR_FILENO, ": ", 2);
+	write(STDERR_FILENO, cmd, _strlen(cmd));
+	write(STDERR_FILENO, ": not found\n", 12);
 
-	write(STDERR_FILENO, err_msg, len);
 	free(cmdc);
-	free(err_msg);
 	errno = 127;
 }
 
