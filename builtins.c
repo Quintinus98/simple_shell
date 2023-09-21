@@ -53,7 +53,6 @@ int _exitshell(char **grid, int cnt, char **lg, arraysub_t sg, alias_t **h)
 	freeSubArray(sg);
 	free_alias(h);
 	free(grid);
-	free_grid(environ);
 	free(lg);
 	exit(status);
 }
