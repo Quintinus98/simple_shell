@@ -16,7 +16,7 @@ int main(__attribute__((unused)) int argc, char **argv)
 	errno = 0;
 	while (1 == 1)
 	{
-		prompt(mode, &dynline);
+		prompt(mode, &dynline, &aliasList);
 		_strcpy(line, dynline);
 		free(dynline);
 

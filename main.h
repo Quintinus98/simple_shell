@@ -56,7 +56,7 @@ typedef struct arraysub
 #define MAX_ELEM 10
 
 /** essentials.c */
-void prompt(int mode, char **line);
+void prompt(int mode, char **line, alias_t **ls);
 char **string_to_array(char *s, char *sep);
 char check_ptr(char ch, char sh);
 void update_arr(char **arr, char ch, int i);

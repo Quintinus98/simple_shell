@@ -7,7 +7,7 @@
  * Return: Returns the entered user input.
 */
 
-void prompt(int mode, char **line)
+void prompt(int mode, char **line, alias_t **ls)
 {
 	size_t linecap = 0;
 	int linelen = 0;
@@ -17,6 +17,7 @@ void prompt(int mode, char **line)
 	linelen = _getline(line, &linecap, stdin);
 	if (linelen == -1)
 	{
+		free_alias(ls);
 		exit(errno);
 	}
 }
