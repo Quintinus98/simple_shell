@@ -4,6 +4,7 @@
  * prompt - Displays "$ {User input}";
  * @mode: Determines if the $ sign will be printed.
  * @line: Address of line in main.
+ * @ls: alias list.
  * Return: Returns the entered user input.
 */
 

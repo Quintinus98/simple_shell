@@ -17,7 +17,6 @@ extern char **environ;
  * struct alias - singly linked list
  * @name: name of alias
  * @val: value of alias
- * @nameVal: name value pair of alias.
  * @next: points to the next node
  */
 typedef struct alias
