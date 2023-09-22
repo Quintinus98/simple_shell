@@ -109,13 +109,20 @@ void prepare_subgrid(char **grid, char **lg, int cnt, char **av, alias_t **ls)
 		if (subgrid.logOp != NULL)
 		{
 			if (!_strcmp(subgrid.logOp, "&&") && errno != 0)
+			{
+				freeSubArray(subgrid);
 				break;
+			}
 			if (!_strcmp(subgrid.logOp, "||") && errno == 0)
+			{
+				freeSubArray(subgrid);
 				break;
+			}
 		}
 
 		pos = subgrid.pos;
 		freeSubArray(subgrid);
+		subgrid.subarr = NULL;
 		subgrid = getSubArray(grid, pos);
 	}
 }

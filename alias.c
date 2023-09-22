@@ -25,7 +25,6 @@ int _alias(char **arr, int cnt, alias_t **aliasList)
 				print_sp_alias(arr[i], *aliasList);
 		}
 	}
-
 	return (0);
 }
 
@@ -36,33 +35,41 @@ int _alias(char **arr, int cnt, alias_t **aliasList)
 */
 void store_alias(char *str, alias_t **head)
 {
-	int j = 0, status = 0;
+	int status = 0;
 	alias_t *tmp;
+	char *ptr = str, *pcpy, *str_m = _strdup(str);
 
 	tmp = *head;
-	j = 0;
-	while (str[j] != '=')
-		j++;
+	pcpy = str;
+	for (; *str != '\0'; str++)
+	{
+		if (*str == '=')
+		{
+			*str = '\0';
+			ptr = str + 1;
+			break;
+		}
+	}
 	while (tmp != NULL)
 	{
-		if (_strncmp(tmp->nameVal, str, j + 1) == 0)
+		if (_strlen(tmp->name) == _strlen(pcpy))
 		{
-			free(tmp->nameVal);
-			free(tmp->val);
-			tmp->val = _strdup(str + (j + 1));
-			tmp->nameVal = malloc(255);
-			_strcpy(tmp->nameVal, tmp->name);
-			_strcat(tmp->nameVal, "='");
-			_strcat(tmp->nameVal, str + (j + 1));
-			_strcat(tmp->nameVal, "'");
-			status = 1;
+			if (_strcmp(tmp->name, pcpy) == 0)
+			{
+				free(tmp->val);
+				tmp->val = _strdup(ptr);
+				status = 1;
+			}
 		}
 		tmp = tmp->next;
 	}
 	if (status)
+	{
+		free(str_m);
 		return;
-
-	add_node_end(head, str);
+	}
+	add_node_end(head, str_m);
+	free(str_m);
 }
 
 /**
@@ -80,11 +87,10 @@ void print_alias(char **arr, const alias_t *h)
 		tmp = h;
 		while (tmp != NULL)
 		{
-			if (tmp->nameVal == NULL)
-				write(1, "(nil)", 5);
-			else
-				write(1, tmp->nameVal, _strlen(tmp->nameVal));
-			write(1, "\n", 1);
+			write(1, tmp->name, _strlen(tmp->name));
+			write(1, "='", 2);
+			write(1, tmp->val, _strlen(tmp->val));
+			write(1, "'\n", 2);
 			tmp = tmp->next;
 		}
 		return;
@@ -99,18 +105,18 @@ void print_alias(char **arr, const alias_t *h)
 void print_sp_alias(char *str, const alias_t *h)
 {
 	const alias_t *tmp;
-	int j = 0;
+	int len = _strlen(str);
 
 	/** Print specific */
-	while (str[j] != '\0')
-		j++;
 	tmp = h;
 	while (tmp != NULL)
 	{
-		if (_strncmp(tmp->nameVal, str, j) == 0)
+		if (!_strcmp(tmp->name, str) && tmp->name[len] == '\0')
 		{
-			write(1, tmp->nameVal, _strlen(tmp->nameVal));
-			write(1, "\n", 1);
+			write(1, tmp->name, _strlen(tmp->name));
+			write(1, "='", 2);
+			write(1, tmp->val, _strlen(tmp->val));
+			write(1, "'\n", 2);
 		}
 		tmp = tmp->next;
 	}
@@ -126,26 +132,27 @@ alias_t *add_node_end(alias_t **head, char *str)
 {
 	alias_t *newNode = malloc(sizeof(alias_t));
 	alias_t *lastNode = *head;
-	unsigned int len = 0, i = 0;
+	unsigned int len = 0;
+	char *ptr = str, *ptr_cpy;
 
 	while (str && str[len])
 		len++;
 	if (!newNode)
 		return (NULL);
 
-	newNode->name = malloc(255);
-	for (; str[i] != '\0'; i++)
+	ptr_cpy = str;
+	while (*str != '\0')
 	{
-		if (str[i] == '=')
+		if (*str == '=')
+		{
+			*str = '\0';
+			ptr = str + 1;
 			break;
-		newNode->name[i] = str[i];
+		}
+		str++;
 	}
-	newNode->val = _strdup(str + (i + 1));
-	newNode->nameVal = malloc(255);
-	_strcpy(newNode->nameVal, newNode->name);
-	_strcat(newNode->nameVal, "='");
-	_strcat(newNode->nameVal, str + (i + 1));
-	_strcat(newNode->nameVal, "'");
+	newNode->name = _strdup(ptr_cpy);
+	newNode->val = _strdup(ptr);
 	newNode->next = NULL;
 
 	if (*head == NULL)

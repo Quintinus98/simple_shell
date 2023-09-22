@@ -24,7 +24,6 @@ typedef struct alias
 {
 	char *name;
 	char *val;
-	char *nameVal;
 	struct alias *next;
 } alias_t;
 

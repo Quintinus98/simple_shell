@@ -18,7 +18,6 @@ void free_alias(alias_t **head)
 	{
 		nextNode = currentNode->next;
 		free(currentNode->name);
-		free(currentNode->nameVal);
 		free(currentNode->val);
 		free(currentNode);
 		currentNode = nextNode;
