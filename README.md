@@ -1,6 +1,6 @@
 # Simple Shell
 
-The idea behind this project is to implement a shell with basic features.
+The idea behind this project is to implement a Linux shell with basic features.
 
 The project was designed and developed in **C**.
 
@@ -16,7 +16,13 @@ To run the program
 The program behaves similarly to ```/bin/sh```.
 
 Some built-in functions are defined.
-- env
 - exit
+- cd
+- alias
+- env
+- setenv
+- unsetenv
+
+If you need to contact me, please click on my name below.
 
 **By** [David Obodo](obododavidsop@gmail.com)
