@@ -4,7 +4,7 @@ The idea behind this project is to implement a Linux shell with basic features.
 
 The project was designed and developed in **C**.
 
-To compile the project
+To compile the project, first clone then run.
 ```sh
 	./compile.bash
 ```
